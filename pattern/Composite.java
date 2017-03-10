@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class Composite implements Serializable {
 	private static final long serialVersionUID = 1214102220657826946L;
 	private final List<Composite> childs;
-	private Composite parent;
+	Composite parent;
 	
 	public Composite() {
 		childs = new ArrayList<>();
@@ -60,5 +60,9 @@ public abstract class Composite implements Serializable {
 	
 	public boolean isEmpty() {
 		return childs.isEmpty();
-	}	
+	}
+
+	public Composite getParent() {
+		return parent;
+	}
 }
