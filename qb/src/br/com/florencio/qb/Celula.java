@@ -1,24 +1,31 @@
 package br.com.florencio.qb;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Celula {
+	private final Color cor;
 	private int xMemento;
 	private int yMemento;
 	int x;
 	int y;
 
-	public Celula(int x, int y) {
+	public Celula(Color cor, int x, int y) {
+		this.cor = cor;
 		this.x = x;
 		this.y = y;
 	}
 
+	public Celula clonar() {
+		return new Celula(cor, x, y);
+	}
+
 	public void desenhar(Graphics2D g2) {
+		g2.setColor(cor);
+
 		g2.drawRect(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
-		
-		g2.fillRect(
-				x + Constantes.BORDA_QUADRADO, 
-				y + Constantes.BORDA_QUADRADO,
+
+		g2.fillRect(x + Constantes.BORDA_QUADRADO, y + Constantes.BORDA_QUADRADO, 
 				Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2, 
 				Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2);
 	}

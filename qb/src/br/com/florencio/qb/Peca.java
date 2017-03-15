@@ -1,5 +1,6 @@
 package br.com.florencio.qb;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
 
@@ -8,8 +9,8 @@ public class Peca {
 	private final Forma forma;
 	private byte estado;
 
-	public Peca(Forma forma, int x, int y) {
-		celulas = forma.criarCelulas(this, x, y);
+	public Peca(Forma forma, Color cor, int x, int y) {
+		celulas = forma.criarCelulas(this, cor, x, y);
 		this.forma = forma;
 	}
 
@@ -19,13 +20,13 @@ public class Peca {
 		}
 	}
 
-	public void deslocar(byte direcao) {
+	public synchronized void deslocar(byte direcao) {
 		for (Celula c : celulas) {
 			c.deslocar(direcao);
 		}
 	}
 
-	public void girar(List<Celula> outras, byte sentido) {
+	public synchronized void girar(List<Celula> outras, byte sentido) {
 		boolean desfazer = false;
 
 		for (Celula c : celulas) {
@@ -52,7 +53,7 @@ public class Peca {
 		}
 	}
 
-	public boolean podeDeslocar(List<Celula> outras, byte direcao) {
+	public synchronized boolean podeDeslocar(List<Celula> outras, byte direcao) {
 		for (int i = 0; i < outras.size(); i++) {
 			Celula outra = outras.get(i);
 
