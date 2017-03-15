@@ -5,29 +5,40 @@ import java.awt.Graphics2D;
 
 public class Celula {
 	private final Color cor;
+	private boolean limite;
 	private int xMemento;
 	private int yMemento;
 	int x;
 	int y;
 
 	public Celula(Color cor, int x, int y) {
+		this(cor, x, y, false);
+	}
+
+	public Celula(Color cor, int x, int y, boolean limite) {
+		this.limite = limite;
 		this.cor = cor;
 		this.x = x;
 		this.y = y;
 	}
 
 	public Celula clonar() {
-		return new Celula(cor, x, y);
+		return new Celula(cor, x, y, limite);
 	}
 
 	public void desenhar(Graphics2D g2) {
 		g2.setColor(cor);
 
-		g2.drawRect(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
+		if (limite) {
+			g2.fillRect(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
 
-		g2.fillRect(x + Constantes.BORDA_QUADRADO, y + Constantes.BORDA_QUADRADO, 
-				Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2, 
-				Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2);
+		} else {
+			g2.drawRect(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
+
+			g2.fillRect(x + Constantes.BORDA_QUADRADO, y + Constantes.BORDA_QUADRADO,
+					Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2,
+					Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2);
+		}
 	}
 
 	public void deslocar(byte direcao) {
@@ -128,5 +139,13 @@ public class Celula {
 	public void restaurarMemento() {
 		x = xMemento;
 		y = yMemento;
+	}
+
+	public boolean isLimite() {
+		return limite;
+	}
+
+	public void setLimite(boolean limite) {
+		this.limite = limite;
 	}
 }

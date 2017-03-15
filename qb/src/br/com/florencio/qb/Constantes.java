@@ -6,22 +6,28 @@ public class Constantes {
 
 	private Constantes() {
 	}
-	
-	public static final short DESLOCAMENTO_X_TERRITORIO = 100;
+
+	public static final byte TOTAL_FASES = 10;
+
+	public static final short TOTAL_POR_FASE = 10;
+
+	public static final int TOTAL_PECAS = TOTAL_FASES * TOTAL_POR_FASE;
+
+	public static final short INTERVALO_MOVIMENTO = 200;
+
+	public static final short INTERVALO_DECREMENTO = 5;
+
+	public static final byte TOTAL_CAMADAS = 10;
+
+	public static final byte TOTAL_COLUNAS = 5;
+
+	public static final short DESLOCAMENTO_X_TERRITORIO = 200;
 
 	public static final short DESLOCAMENTO_Y_TERRITORIO = 30;
-
-	public static final short INTERVALO_MOVIMENTO = 300;
 
 	public static final byte HORIZONTAL = 0;
 
 	public static final byte VERTICAL = 1;
-
-	public static final int TOTAL_PECAS = 250;
-
-	public static final byte TOTAL_CAMADAS = 15;
-
-	public static final byte TOTAL_COLUNAS = 8;
 
 	public static final byte LADO_QUADRADO = 20;
 
@@ -43,6 +49,6 @@ public class Constantes {
 
 	public static final byte SENTIDO_ANTIHORARIO = 1;
 
-	public static final Color[] CORES = { Color.BLACK, Color.BLUE, Color.RED,
-			Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE };
+	public static final Color[] CORES = { Color.BLACK, Color.BLUE, Color.RED, Color.GREEN, Color.CYAN, Color.MAGENTA,
+			Color.ORANGE };
 }

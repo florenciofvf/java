@@ -22,7 +22,7 @@ public class MiniBarra implements Forma {
 		c1.leste();
 		celulas.add(c1);
 
-		peca.setEstado(Constantes.HORIZONTAL);
+		peca.setOrientacao(Constantes.HORIZONTAL);
 
 		return celulas;
 	}
@@ -33,17 +33,17 @@ public class MiniBarra implements Forma {
 
 		Celula c1 = celulas.get(1);
 
-		if (Constantes.HORIZONTAL == peca.getEstado()) {
+		if (Constantes.HORIZONTAL == peca.getOrientacao()) {
 
 			c1.oeste();
 			c1.sul();
-			peca.setEstado(Constantes.VERTICAL);
+			peca.setOrientacao(Constantes.VERTICAL);
 
-		} else if (Constantes.VERTICAL == peca.getEstado()) {
+		} else if (Constantes.VERTICAL == peca.getOrientacao()) {
 
 			c1.norte();
 			c1.leste();
-			peca.setEstado(Constantes.HORIZONTAL);
+			peca.setOrientacao(Constantes.HORIZONTAL);
 
 		}
 	}

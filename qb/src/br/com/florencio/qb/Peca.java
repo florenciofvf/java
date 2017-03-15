@@ -6,34 +6,39 @@ import java.util.List;
 
 public class Peca {
 	private final List<Celula> celulas;
+	private byte orientacaoMemento;
+	private byte direcaoMemento;
 	private final Forma forma;
-	private byte estado;
+	private short grauMemento;
+	private byte orientacao;
+	private byte direcao;
+	private short grau;
 
 	public Peca(Forma forma, Color cor, int x, int y) {
 		celulas = forma.criarCelulas(this, cor, x, y);
 		this.forma = forma;
+		id++;
+		System.out.println("ID=" + id);
 	}
 
+	static int id;
+	
 	public void desenhar(Graphics2D g2) {
 		for (Celula c : celulas) {
 			c.desenhar(g2);
 		}
 	}
 
-	public synchronized void deslocar(byte direcao) {
+	public void deslocar(byte direcao) {
 		for (Celula c : celulas) {
 			c.deslocar(direcao);
 		}
 	}
 
-	public synchronized void girar(List<Celula> outras, byte sentido) {
-		boolean desfazer = false;
-
-		for (Celula c : celulas) {
-			c.criarMemento();
-		}
-
+	public void girar(List<Celula> outras, byte sentido) {
+		criarMemento();
 		forma.girar(this, sentido);
+		boolean desfazer = false;
 
 		externo: for (int i = 0; i < outras.size(); i++) {
 			Celula outra = outras.get(i);
@@ -47,13 +52,11 @@ public class Peca {
 		}
 
 		if (desfazer) {
-			for (Celula c : celulas) {
-				c.restaurarMemento();
-			}
+			restaurarMemento();
 		}
 	}
 
-	public synchronized boolean podeDeslocar(List<Celula> outras, byte direcao) {
+	public boolean podeDeslocar(List<Celula> outras, byte direcao) {
 		for (int i = 0; i < outras.size(); i++) {
 			Celula outra = outras.get(i);
 
@@ -71,11 +74,41 @@ public class Peca {
 		return celulas;
 	}
 
-	public byte getEstado() {
-		return estado;
+	public byte getOrientacao() {
+		return orientacao;
 	}
 
-	public void setEstado(byte estado) {
-		this.estado = estado;
+	public void setOrientacao(byte orientacao) {
+		this.orientacao = orientacao;
+	}
+
+	public short getGrau() {
+		return grau;
+	}
+
+	public void setGrau(short grau) {
+		this.grau = grau;
+	}
+
+	public Forma getForma() {
+		return forma;
+	}
+
+	public void criarMemento() {
+		orientacaoMemento = orientacao;
+		direcaoMemento = direcao;
+		grauMemento = grau;
+		for (Celula c : celulas) {
+			c.criarMemento();
+		}
+	}
+
+	public void restaurarMemento() {
+		orientacao = orientacaoMemento;
+		direcao = direcaoMemento;
+		grau = grauMemento;
+		for (Celula c : celulas) {
+			c.restaurarMemento();
+		}
 	}
 }

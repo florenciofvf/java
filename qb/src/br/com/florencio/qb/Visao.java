@@ -16,10 +16,9 @@ public class Visao extends JFrame implements Ouvinte {
 	private static final long serialVersionUID = 1L;
 	private final Territorio territorio;
 
-	private final JLabel[] rotulos = new JLabel[] { new JLabel("COMANDOS"),
-			new JLabel("Tecla A"), new JLabel("Tecla S"),
-			new JLabel("Seta esquerda"), new JLabel("Seta direita"),
-			new JLabel("EspaÃ§o (PAUSAR/REINICIAR)") };
+	private final JLabel[] rotulos = new JLabel[] { new JLabel("COMANDOS"), new JLabel("Tecla A"),
+			new JLabel("Tecla S"), new JLabel("Seta esquerda"), new JLabel("Seta direita"),
+			new JLabel("Espaço (PAUSAR/REINICIAR)") };
 
 	public Visao() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
