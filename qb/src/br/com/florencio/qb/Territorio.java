@@ -10,13 +10,6 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import br.com.florencio.qb.forma.J;
-import br.com.florencio.qb.forma.L;
-import br.com.florencio.qb.forma.MiniBarra;
-import br.com.florencio.qb.forma.MiniL;
-import br.com.florencio.qb.forma.Ponto;
-import br.com.florencio.qb.forma.QuadradoOco;
-
 public class Territorio extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private final Random random = new Random();
@@ -44,12 +37,18 @@ public class Territorio extends JPanel {
 	}
 
 	private void inicializarFormas() {
-		formas.add(new QuadradoOco());
-		formas.add(new MiniBarra());
-		formas.add(new Ponto());
-		formas.add(new L());
-		formas.add(new J());
-		formas.add(new MiniL());
+//		formas.add(new _QuadradoOco());
+//		formas.add(new _Barra());
+//		formas.add(new _MiniBarra());
+//		formas.add(new _Ponto());
+//		formas.add(new _Quadrado());
+//		formas.add(new _Estrela());
+		
+//		formas.add(new L());
+//		formas.add(new J());
+//		formas.add(new MiniU());
+//		formas.add(new MiniL());
+//		formas.add(new MiniT());
 	}
 
 	public void paint(Graphics g) {

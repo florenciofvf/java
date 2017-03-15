@@ -13,17 +13,17 @@ public class Constantes {
 
 	public static final int TOTAL_PECAS = TOTAL_FASES * TOTAL_POR_FASE;
 
-	public static final short INTERVALO_MOVIMENTO = 200;
+	public static final short INTERVALO_MOVIMENTO = 100;
 
 	public static final short INTERVALO_DECREMENTO = 5;
 
-	public static final byte TOTAL_CAMADAS = 10;
+	public static final byte TOTAL_CAMADAS = 20;
 
-	public static final byte TOTAL_COLUNAS = 5;
+	public static final byte TOTAL_COLUNAS = 11;
 
-	public static final short DESLOCAMENTO_X_TERRITORIO = 200;
+	public static final short DESLOCAMENTO_X_TERRITORIO = 100;
 
-	public static final short DESLOCAMENTO_Y_TERRITORIO = 30;
+	public static final short DESLOCAMENTO_Y_TERRITORIO = 5;
 
 	public static final byte HORIZONTAL = 0;
 

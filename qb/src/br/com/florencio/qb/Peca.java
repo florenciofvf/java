@@ -17,12 +17,8 @@ public class Peca {
 	public Peca(Forma forma, Color cor, int x, int y) {
 		celulas = forma.criarCelulas(this, cor, x, y);
 		this.forma = forma;
-		id++;
-		System.out.println("ID=" + id);
 	}
 
-	static int id;
-	
 	public void desenhar(Graphics2D g2) {
 		for (Celula c : celulas) {
 			c.desenhar(g2);
