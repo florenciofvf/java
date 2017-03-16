@@ -44,7 +44,8 @@ public class FilaEvento {
 					}
 				} catch (Exception e) {
 					Territorio.grupoVigente++;
-					System.out.println("GRUPO VIGENTE=" + Territorio.grupoVigente);
+					System.out.println("GRUPO VIGENTE="
+							+ Territorio.grupoVigente);
 					e.printStackTrace();
 				}
 			}

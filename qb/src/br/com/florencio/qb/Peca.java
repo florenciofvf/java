@@ -11,12 +11,14 @@ public class Peca {
 	private final Forma forma;
 	private short grauMemento;
 	private byte orientacao;
+	private final Color cor;
 	private byte direcao;
 	private short grau;
 
 	public Peca(Forma forma, Color cor, int x, int y) {
 		celulas = forma.criarCelulas(this, cor, x, y);
 		this.forma = forma;
+		this.cor = cor;
 	}
 
 	public void desenhar(Graphics2D g2) {
@@ -106,5 +108,9 @@ public class Peca {
 		for (Celula c : celulas) {
 			c.restaurarMemento();
 		}
+	}
+
+	public Color getCor() {
+		return cor;
 	}
 }

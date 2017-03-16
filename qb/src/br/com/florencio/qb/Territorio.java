@@ -10,6 +10,17 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import br.com.florencio.qb.forma.Barra;
+import br.com.florencio.qb.forma.Estrela;
+import br.com.florencio.qb.forma.J;
+import br.com.florencio.qb.forma.L;
+import br.com.florencio.qb.forma.MiniBarra;
+import br.com.florencio.qb.forma.MiniL;
+import br.com.florencio.qb.forma.MiniT;
+import br.com.florencio.qb.forma.MiniU;
+import br.com.florencio.qb.forma.Ponto;
+import br.com.florencio.qb.forma.Quadrado;
+
 public class Territorio extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private final Random random = new Random();
@@ -18,11 +29,13 @@ public class Territorio extends JPanel {
 	private final List<Forma> formas;
 	private final Ouvinte ouvinte;
 	private final Visao visao;
+	private Peca pecaProxima;
 	static int grupoVigente;
 	private int totalPecas;
 	private THREAD thread;
 	private int intervalo;
 	private Peca peca;
+	private int xPos;
 	private int y;
 
 	public Territorio(Visao visao) {
@@ -37,18 +50,17 @@ public class Territorio extends JPanel {
 	}
 
 	private void inicializarFormas() {
-//		formas.add(new _QuadradoOco());
-//		formas.add(new _Barra());
-//		formas.add(new _MiniBarra());
-//		formas.add(new _Ponto());
-//		formas.add(new _Quadrado());
-//		formas.add(new _Estrela());
-		
-//		formas.add(new L());
-//		formas.add(new J());
-//		formas.add(new MiniU());
-//		formas.add(new MiniL());
-//		formas.add(new MiniT());
+		// formas.add(new _QuadradoOco());
+		formas.add(new Barra());
+		formas.add(new MiniBarra());
+		formas.add(new Ponto());
+		formas.add(new Quadrado());
+		formas.add(new Estrela());
+		formas.add(new J());
+		formas.add(new L());
+		formas.add(new MiniL());
+		formas.add(new MiniT());
+		formas.add(new MiniU());
 	}
 
 	public void paint(Graphics g) {
@@ -57,6 +69,10 @@ public class Territorio extends JPanel {
 
 		if (peca != null) {
 			peca.desenhar(g2);
+		}
+
+		if (pecaProxima != null) {
+			pecaProxima.desenhar(g2);
 		}
 
 		for (Celula c : celulas) {
@@ -147,7 +163,10 @@ public class Territorio extends JPanel {
 		celulas.addAll(colunaEsquerd);
 		celulas.addAll(colunaDireita);
 		celulas.addAll(camadaInferio);
-		
+
+		xPos = colunaDireita.get(0).x
+				+ Constantes.DESLOCAMENTO_X_POS_TERRITORIO;
+
 		criarPecaAleatoria();
 	}
 
@@ -160,8 +179,25 @@ public class Territorio extends JPanel {
 			x += Constantes.LADO_QUADRADO;
 		}
 
-		peca = new Peca(forma, cor, x, Constantes.DESLOCAMENTO_Y_TERRITORIO);
+		if(pecaProxima == null) {
+			pecaProxima = new Peca(forma, cor, xPos, Constantes.DESLOCAMENTO_Y_TERRITORIO);
+			cor = Constantes.CORES[random.nextInt(Constantes.CORES.length)];
+			forma = formas.get(random.nextInt(formas.size()));
+		}
+
+		peca = new Peca(pecaProxima.getForma(), pecaProxima.getCor(), x, Constantes.DESLOCAMENTO_Y_TERRITORIO);
+		
+		pecaProxima = new Peca(forma, cor, xPos, Constantes.DESLOCAMENTO_Y_TERRITORIO);
+		
 		repaint();
+	}
+
+	public void descerPeca() {
+		filaEvento.adicionar(new Acao(grupoVigente) {
+			public void executar() {
+				processar();
+			}
+		});
 	}
 
 	private void processar() {
@@ -204,7 +240,8 @@ public class Territorio extends JPanel {
 
 		peca = null;
 		totalPecas++;
-		visao.setTitulo("Tamanho = " + totalPecas + " de " + Constantes.TOTAL_PECAS);
+		visao.setTitulo("Tamanho = " + totalPecas + " de "
+				+ Constantes.TOTAL_PECAS);
 
 		if (totalPecas % Constantes.TOTAL_POR_FASE == 0) {
 			intervalo -= Constantes.INTERVALO_DECREMENTO;
@@ -224,7 +261,8 @@ public class Territorio extends JPanel {
 	}
 
 	private void loop() {
-		int indiceValido = Constantes.TOTAL_CAMADAS * 2 + Constantes.TOTAL_COLUNAS;
+		int indiceValido = Constantes.TOTAL_CAMADAS * 2
+				+ Constantes.TOTAL_COLUNAS;
 		List<Celula> marcados = new ArrayList<>();
 
 		int y = this.y;

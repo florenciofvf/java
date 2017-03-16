@@ -16,9 +16,10 @@ public class Visao extends JFrame implements Ouvinte {
 	private static final long serialVersionUID = 1L;
 	private final Territorio territorio;
 
-	private final JLabel[] rotulos = new JLabel[] { new JLabel("COMANDOS"), new JLabel("Tecla A"),
-			new JLabel("Tecla S"), new JLabel("Seta esquerda"), new JLabel("Seta direita"),
-			new JLabel("Espa�o (PAUSAR/REINICIAR)") };
+	private final JLabel[] rotulos = new JLabel[] { new JLabel("COMANDOS"),
+			new JLabel("Anti-Horário A"), new JLabel("Horário S"),
+			new JLabel("Seta esquerda"), new JLabel("Seta direita"),
+			new JLabel("Espaço (PAUSAR/REINICIAR)") };
 
 	public Visao() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -41,7 +42,8 @@ public class Visao extends JFrame implements Ouvinte {
 
 	private void registrarEvento() {
 		addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent e) {
+			@Override
+			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_A:
 					territorio.girar(Constantes.SENTIDO_ANTIHORARIO);
@@ -57,6 +59,10 @@ public class Visao extends JFrame implements Ouvinte {
 
 				case KeyEvent.VK_LEFT:
 					territorio.deslocar(Constantes.DIRECAO_OESTE);
+					break;
+
+				case KeyEvent.VK_DOWN:
+					territorio.descerPeca();
 					break;
 
 				case KeyEvent.VK_SPACE:

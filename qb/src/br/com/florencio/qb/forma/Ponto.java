@@ -15,6 +15,7 @@ public class Ponto implements Forma {
 		List<Celula> celulas = new ArrayList<>();
 
 		Celula c0 = new Celula(cor, x, y);
+
 		celulas.add(c0);
 
 		return celulas;

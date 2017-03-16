@@ -16,10 +16,11 @@ public class MiniBarra implements Forma {
 		List<Celula> celulas = new ArrayList<>();
 
 		Celula c0 = new Celula(cor, x, y);
-		celulas.add(c0);
+		c0.oeste();
 
 		Celula c1 = new Celula(cor, x, y);
-		c1.leste();
+
+		celulas.add(c0);
 		celulas.add(c1);
 
 		peca.setOrientacao(Constantes.HORIZONTAL);
@@ -31,20 +32,17 @@ public class MiniBarra implements Forma {
 	public void girar(Peca peca, byte sentido) {
 		List<Celula> celulas = peca.getCelulas();
 
+		Celula c0 = celulas.get(0);
 		Celula c1 = celulas.get(1);
 
-		if (Constantes.HORIZONTAL == peca.getOrientacao()) {
+		c0.copiar(celulas);
 
-			c1.oeste();
+		if (Constantes.HORIZONTAL == peca.getOrientacao()) {
 			c1.sul();
 			peca.setOrientacao(Constantes.VERTICAL);
-
 		} else if (Constantes.VERTICAL == peca.getOrientacao()) {
-
-			c1.norte();
 			c1.leste();
 			peca.setOrientacao(Constantes.HORIZONTAL);
-
 		}
 	}
 }

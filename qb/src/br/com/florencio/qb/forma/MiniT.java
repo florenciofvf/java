@@ -15,25 +15,13 @@ public class MiniT implements Forma {
 	public List<Celula> criarCelulas(Peca peca, Color cor, int x, int y) {
 		List<Celula> celulas = new ArrayList<>();
 
-		x -= Constantes.LADO_QUADRADO;
-		
-		Celula c0 = new Celula(cor, x, y);
-		celulas.add(c0);
+		celulas.add(new Celula(cor, x, y));
+		celulas.add(new Celula(cor, x, y));
+		celulas.add(new Celula(cor, x, y));
+		celulas.add(new Celula(cor, x, y));
 
-		Celula c1 = new Celula(cor, x, y);
-		c1.leste();
-		celulas.add(c1);
+		girar(celulas, Constantes.GRAU_0, peca);
 
-		Celula c2 = new Celula(cor, x, y);
-		c2.leste();
-		c2.leste();
-		celulas.add(c2);
-
-		Celula c3 = new Celula(cor, x, y);
-		c3.sul();
-		c3.leste();
-		celulas.add(c3);
-		
 		return celulas;
 	}
 
@@ -41,8 +29,54 @@ public class MiniT implements Forma {
 	public void girar(Peca peca, byte sentido) {
 		List<Celula> celulas = peca.getCelulas();
 
+		if (Constantes.SENTIDO_HORARIO == sentido) {
+			if (Constantes.GRAU_0 == peca.getGrau()) {
+				girar(celulas, Constantes.GRAU_270, peca);
+			} else if (Constantes.GRAU_270 == peca.getGrau()) {
+				girar(celulas, Constantes.GRAU_180, peca);
+			} else if (Constantes.GRAU_180 == peca.getGrau()) {
+				girar(celulas, Constantes.GRAU_90, peca);
+			} else if (Constantes.GRAU_90 == peca.getGrau()) {
+				girar(celulas, Constantes.GRAU_0, peca);
+			}
+		} else if (Constantes.SENTIDO_ANTIHORARIO == sentido) {
+			if (Constantes.GRAU_0 == peca.getGrau()) {
+				girar(celulas, Constantes.GRAU_90, peca);
+			} else if (Constantes.GRAU_90 == peca.getGrau()) {
+				girar(celulas, Constantes.GRAU_180, peca);
+			} else if (Constantes.GRAU_180 == peca.getGrau()) {
+				girar(celulas, Constantes.GRAU_270, peca);
+			} else if (Constantes.GRAU_270 == peca.getGrau()) {
+				girar(celulas, Constantes.GRAU_0, peca);
+			}
+		}
+	}
+
+	private void girar(List<Celula> celulas, short grau, Peca peca) {
 		Celula c0 = celulas.get(0);
 		Celula c1 = celulas.get(1);
 		Celula c2 = celulas.get(2);
+		Celula c3 = celulas.get(3);
+
+		c2.copiar(celulas);
+		peca.setGrau(grau);
+
+		if (Constantes.GRAU_0 == grau) {
+			c0.norte();
+			c1.oeste();
+			c3.leste();
+		} else if (Constantes.GRAU_90 == grau) {
+			c0.oeste();
+			c1.sul();
+			c3.norte();
+		} else if (Constantes.GRAU_180 == grau) {
+			c0.sul();
+			c1.leste();
+			c3.oeste();
+		} else if (Constantes.GRAU_270 == grau) {
+			c0.leste();
+			c1.norte();
+			c3.sul();
+		}
 	}
 }
