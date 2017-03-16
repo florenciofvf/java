@@ -72,10 +72,10 @@ public class Territorio extends JPanel {
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D) g;
 
-		if(Constantes.DESENHAR_PECA_CIRCULAR) {
+		if (Constantes.DESENHAR_PECA_CIRCULAR) {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		}
-		
+
 		if (peca != null) {
 			peca.desenhar(g2);
 		}
@@ -339,10 +339,10 @@ public class Territorio extends JPanel {
 				});
 
 				try {
-					if(intervalo < 0) {
+					if (intervalo < 0) {
 						intervalo = 0;
 					}
-					
+
 					Thread.sleep(intervalo);
 				} catch (Exception e) {
 					e.printStackTrace();

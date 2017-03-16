@@ -9,11 +9,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
 public class Catalogo extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private final Random random = new Random();
 	private final List<Produto> produtos;
 
 	public Catalogo() {
@@ -67,7 +69,11 @@ public class Catalogo extends JPanel {
 		void criarPeca() {
 			int x = getWidth() / 2;
 			int y = getHeight() / 2;
-			peca = new Peca(forma, Color.BLACK, x, y);
+
+			Color cor = Constantes.GERAR_PECAS_COLORIDAS ? Constantes.CORES[random.nextInt(Constantes.CORES.length)]
+					: Color.BLACK;
+
+			peca = new Peca(forma, cor, x, y);
 		}
 
 		@Override
@@ -75,11 +81,11 @@ public class Catalogo extends JPanel {
 			super.paint(g);
 
 			Graphics2D g2 = (Graphics2D) g;
-			
-			if(Constantes.DESENHAR_PECA_CIRCULAR) {
+
+			if (Constantes.DESENHAR_PECA_CIRCULAR) {
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			}
-			
+
 			if (selecionado) {
 				Color c = g.getColor();
 				g.setColor(Color.BLUE);
