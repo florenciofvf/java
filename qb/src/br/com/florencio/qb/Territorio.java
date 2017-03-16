@@ -233,7 +233,9 @@ public class Territorio extends JPanel {
 			}
 
 			if (limiteUltrapassado) {
-				thread.desativar();
+				if(thread != null) {
+					thread.desativar();
+				}
 				filaEvento.desativar();
 
 				filaEvento.adicionar(new Acao("PERDEU", true) {
@@ -263,7 +265,9 @@ public class Territorio extends JPanel {
 		}
 
 		if (totalPecas >= Constantes.TOTAL_PECAS) {
-			thread.desativar();
+			if(thread != null) {
+				thread.desativar();
+			}
 			filaEvento.desativar();
 
 			filaEvento.adicionar(new Acao("GANHOU", true) {
