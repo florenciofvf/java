@@ -7,11 +7,17 @@ public class Constantes {
 	private Constantes() {
 	}
 
-	public static final short DESLOCAMENTO_X_POS_TERRITORIO = 80;
+	public static final boolean LIMITE_OPACO = false;
+
+	public static final boolean DESENHAR_PECA_CIRCULAR = false;
+
+	public static final boolean GERAR_PECAS_COLORIDAS = true;
+
+	public static final short DESLOCAMENTO_X_POS_TERRITORIO = 50;
 
 	public static final short DESLOCAMENTO_X_TERRITORIO = 100;
 
-	public static final short DESLOCAMENTO_Y_TERRITORIO = 100;
+	public static final short DESLOCAMENTO_Y_TERRITORIO = 50;
 
 	public static final byte TOTAL_FASES = 10;
 
@@ -23,23 +29,23 @@ public class Constantes {
 
 	public static final short INTERVALO_DECREMENTO = 5;
 
-	public static final byte TOTAL_CAMADAS = 20;
+	public static final byte TOTAL_CAMADAS = 22;
 
 	public static final byte TOTAL_COLUNAS = 11;
 
 	public static final byte MINIMO_PECA_JOGO = 3;
-	
+
 	public static final byte HORIZONTAL = 0;
 
 	public static final byte VERTICAL = 1;
 
-	public static final byte LADO_QUADRADO = 20;
+	public static final byte LADO_QUADRADO = 15;
 
 	public static final byte BORDA_QUADRADO = 3;
 
-	public static final short LARGURA_JANELA = 800;
+	public static final short LARGURA_JANELA = 600;
 
-	public static final short ALTURA_JANELA = 600;
+	public static final short ALTURA_JANELA = 500;
 
 	public static final byte DIRECAO_NORTE = 0;
 

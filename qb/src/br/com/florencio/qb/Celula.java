@@ -31,14 +31,25 @@ public class Celula {
 		g2.setColor(cor);
 
 		if (limite) {
-			g2.fillRect(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
-
+			if (Constantes.DESENHAR_PECA_CIRCULAR) {
+				g2.fillOval(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
+			} else {
+				g2.fillRect(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
+			}
 		} else {
-			g2.drawRect(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
+			if (Constantes.DESENHAR_PECA_CIRCULAR) {
+				g2.drawOval(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
 
-			g2.fillRect(x + Constantes.BORDA_QUADRADO, y + Constantes.BORDA_QUADRADO,
-					Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2,
-					Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2);
+				g2.fillOval(x + Constantes.BORDA_QUADRADO, y + Constantes.BORDA_QUADRADO,
+						Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2,
+						Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2);
+			} else {
+				g2.drawRect(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
+
+				g2.fillRect(x + Constantes.BORDA_QUADRADO, y + Constantes.BORDA_QUADRADO,
+						Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2,
+						Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2);
+			}
 		}
 	}
 

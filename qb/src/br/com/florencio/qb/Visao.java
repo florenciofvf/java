@@ -39,7 +39,6 @@ public class Visao extends JFrame implements Ouvinte {
 	private void montarLayout() {
 		setLayout(new BorderLayout());
 
-		
 		JPanel panelJogo = new JPanel(new BorderLayout());
 		panelJogo.add(BorderLayout.CENTER, territorio);
 		JPanel panel = new JPanel(new GridLayout(0, 1));
@@ -47,7 +46,7 @@ public class Visao extends JFrame implements Ouvinte {
 			panel.add(label);
 		}
 		panelJogo.add(BorderLayout.EAST, panel);
-		
+
 		fichario.addTab(Strings.get("label_componente"), catalogo);
 		fichario.addTab(Strings.get("label_jogo"), panelJogo);
 
@@ -58,15 +57,16 @@ public class Visao extends JFrame implements Ouvinte {
 		fichario.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if(fichario.getSelectedIndex() == 0) {
+				if (fichario.getSelectedIndex() == 0) {
 					catalogo.criarPecas();
-					
-				} else if(fichario.getSelectedIndex() == 1) {
+
+				} else if (fichario.getSelectedIndex() == 1) {
 					List<Forma> formas = catalogo.getFormas();
-					
-					if(formas.size() < Constantes.MINIMO_PECA_JOGO) {
+
+					if (formas.size() < Constantes.MINIMO_PECA_JOGO) {
 						fichario.setSelectedIndex(0);
-						JOptionPane.showMessageDialog(Visao.this, Strings.get("label_minimo_peca_jogo") + Constantes.MINIMO_PECA_JOGO);
+						JOptionPane.showMessageDialog(Visao.this,
+								Strings.get("label_minimo_peca_jogo") + Constantes.MINIMO_PECA_JOGO);
 					} else {
 						Territorio.formas.clear();
 						Territorio.formas.addAll(formas);
@@ -75,7 +75,7 @@ public class Visao extends JFrame implements Ouvinte {
 				}
 			}
 		});
-		
+
 		fichario.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {

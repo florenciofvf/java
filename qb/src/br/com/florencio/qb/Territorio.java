@@ -3,6 +3,7 @@ package br.com.florencio.qb;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -66,10 +67,15 @@ public class Territorio extends JPanel {
 		formas.add(new MiniZL());
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D) g;
 
+		if(Constantes.DESENHAR_PECA_CIRCULAR) {
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		}
+		
 		if (peca != null) {
 			peca.desenhar(g2);
 		}
@@ -126,7 +132,7 @@ public class Territorio extends JPanel {
 	public void ini() {
 		peca = null;
 		pecaProxima = null;
-		
+
 		if (thread != null) {
 			thread.desativar();
 		}
@@ -143,11 +149,9 @@ public class Territorio extends JPanel {
 		int x = Constantes.DESLOCAMENTO_X_TERRITORIO;
 		y = Constantes.DESLOCAMENTO_Y_TERRITORIO;
 
-		boolean limiteOpaco = false;
-
 		for (int i = 0; i < Constantes.TOTAL_CAMADAS; i++) {
-			colunaEsquerd.add(new Celula(Color.BLACK, x, y, limiteOpaco));
-			colunaDireita.add(new Celula(Color.BLACK, x, y, limiteOpaco));
+			colunaEsquerd.add(new Celula(Color.BLACK, x, y, Constantes.LIMITE_OPACO));
+			colunaDireita.add(new Celula(Color.BLACK, x, y, Constantes.LIMITE_OPACO));
 			y += Constantes.LADO_QUADRADO;
 		}
 
@@ -160,7 +164,7 @@ public class Territorio extends JPanel {
 		y -= Constantes.LADO_QUADRADO;
 
 		for (int i = 1; i <= Constantes.TOTAL_COLUNAS; i++) {
-			Celula c = new Celula(Color.BLACK, x, y, limiteOpaco);
+			Celula c = new Celula(Color.BLACK, x, y, Constantes.LIMITE_OPACO);
 			camadaInferio.add(c);
 
 			for (int j = 0; j < i; j++) {
@@ -180,7 +184,8 @@ public class Territorio extends JPanel {
 
 	public void criarPecaAleatoria() {
 		int x = Constantes.DESLOCAMENTO_X_TERRITORIO + Constantes.LADO_QUADRADO;
-		Color cor = Constantes.CORES[random.nextInt(Constantes.CORES.length)];
+		Color cor = Constantes.GERAR_PECAS_COLORIDAS ? Constantes.CORES[random.nextInt(Constantes.CORES.length)]
+				: Color.BLACK;
 		Forma forma = formas.get(random.nextInt(formas.size()));
 
 		for (int y = 0; y < Constantes.TOTAL_COLUNAS / 2; y++) {
@@ -189,7 +194,8 @@ public class Territorio extends JPanel {
 
 		if (pecaProxima == null) {
 			pecaProxima = new Peca(forma, cor, xPos, Constantes.DESLOCAMENTO_Y_TERRITORIO);
-			cor = Constantes.CORES[random.nextInt(Constantes.CORES.length)];
+			cor = Constantes.GERAR_PECAS_COLORIDAS ? Constantes.CORES[random.nextInt(Constantes.CORES.length)]
+					: Color.BLACK;
 			forma = formas.get(random.nextInt(formas.size()));
 		}
 
@@ -333,6 +339,10 @@ public class Territorio extends JPanel {
 				});
 
 				try {
+					if(intervalo < 0) {
+						intervalo = 0;
+					}
+					
 					Thread.sleep(intervalo);
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -6,7 +6,7 @@ import java.util.List;
 public class FilaEvento {
 	private final List<Acao> acoes;
 	private final THREAD thread;
-	public boolean valida;
+	private boolean valida;
 
 	public FilaEvento() {
 		acoes = new ArrayList<Acao>();

@@ -16,7 +16,7 @@ public class QuadradoOco implements Forma {
 		List<Celula> celulas = new ArrayList<>();
 
 		y -= Constantes.LADO_QUADRADO;
-		
+
 		Celula c0 = new Celula(cor, x, y);
 		c0.oeste();
 

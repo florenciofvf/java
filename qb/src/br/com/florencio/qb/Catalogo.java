@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Catalogo extends JPanel {
 
 	public Catalogo() {
 		produtos = new ArrayList<>();
-		for(Forma f : Territorio.formas) {
+		for (Forma f : Territorio.formas) {
 			produtos.add(new Produto(f));
 		}
 		montarLayout();
@@ -72,11 +73,21 @@ public class Catalogo extends JPanel {
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
-			if(selecionado) {
-				g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+
+			Graphics2D g2 = (Graphics2D) g;
+			
+			if(Constantes.DESENHAR_PECA_CIRCULAR) {
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			}
+			
+			if (selecionado) {
+				Color c = g.getColor();
+				g.setColor(Color.BLUE);
+				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+				g.setColor(c);
 			}
 			if (peca != null) {
-				peca.desenhar((Graphics2D) g);
+				peca.desenhar(g2);
 			}
 		}
 	}
