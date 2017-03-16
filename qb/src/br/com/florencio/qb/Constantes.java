@@ -27,6 +27,8 @@ public class Constantes {
 
 	public static final byte TOTAL_COLUNAS = 11;
 
+	public static final byte MINIMO_PECA_JOGO = 3;
+	
 	public static final byte HORIZONTAL = 0;
 
 	public static final byte VERTICAL = 1;
@@ -59,6 +61,6 @@ public class Constantes {
 
 	public static final short GRAU_270 = 270;
 
-	public static final Color[] CORES = { Color.BLACK, Color.BLUE, Color.RED,
-			Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE };
+	public static final Color[] CORES = { Color.BLACK, Color.BLUE, Color.RED, Color.GREEN, Color.CYAN, Color.MAGENTA,
+			Color.ORANGE };
 }

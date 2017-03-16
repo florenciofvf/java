@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.florencio.qb.Celula;
+import br.com.florencio.qb.Constantes;
 import br.com.florencio.qb.Forma;
 import br.com.florencio.qb.Peca;
 
@@ -14,6 +15,8 @@ public class QuadradoOco implements Forma {
 	public List<Celula> criarCelulas(Peca peca, Color cor, int x, int y) {
 		List<Celula> celulas = new ArrayList<>();
 
+		y -= Constantes.LADO_QUADRADO;
+		
 		Celula c0 = new Celula(cor, x, y);
 		c0.oeste();
 

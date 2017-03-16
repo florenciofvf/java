@@ -31,17 +31,14 @@ public class Celula {
 		g2.setColor(cor);
 
 		if (limite) {
-			g2.fillRect(x, y, Constantes.LADO_QUADRADO,
-					Constantes.LADO_QUADRADO);
+			g2.fillRect(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
 
 		} else {
-			g2.drawRect(x, y, Constantes.LADO_QUADRADO,
-					Constantes.LADO_QUADRADO);
+			g2.drawRect(x, y, Constantes.LADO_QUADRADO, Constantes.LADO_QUADRADO);
 
-			g2.fillRect(x + Constantes.BORDA_QUADRADO, y
-					+ Constantes.BORDA_QUADRADO, Constantes.LADO_QUADRADO
-					- Constantes.BORDA_QUADRADO * 2, Constantes.LADO_QUADRADO
-					- Constantes.BORDA_QUADRADO * 2);
+			g2.fillRect(x + Constantes.BORDA_QUADRADO, y + Constantes.BORDA_QUADRADO,
+					Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2,
+					Constantes.LADO_QUADRADO - Constantes.BORDA_QUADRADO * 2);
 		}
 	}
 

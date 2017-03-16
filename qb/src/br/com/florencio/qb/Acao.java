@@ -1,17 +1,22 @@
 package br.com.florencio.qb;
 
 public abstract class Acao {
+	final String descricao;
 	final boolean especial;
-	final int grupo;
 
-	public Acao(int grupo) {
-		this(grupo, false);
+	public Acao(String descricao) {
+		this(descricao, false);
 	}
 
-	public Acao(int grupo, boolean especial) {
+	public Acao(String descricao, boolean especial) {
+		this.descricao = descricao;
 		this.especial = especial;
-		this.grupo = grupo;
 	}
 
 	public abstract void executar();
+
+	@Override
+	public String toString() {
+		return descricao;
+	}
 }

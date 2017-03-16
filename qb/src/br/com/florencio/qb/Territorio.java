@@ -18,19 +18,21 @@ import br.com.florencio.qb.forma.MiniBarra;
 import br.com.florencio.qb.forma.MiniL;
 import br.com.florencio.qb.forma.MiniT;
 import br.com.florencio.qb.forma.MiniU;
+import br.com.florencio.qb.forma.MiniZJ;
+import br.com.florencio.qb.forma.MiniZL;
 import br.com.florencio.qb.forma.Ponto;
 import br.com.florencio.qb.forma.Quadrado;
+import br.com.florencio.qb.forma.QuadradoOco;
 
 public class Territorio extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private final Random random = new Random();
 	private final FilaEvento filaEvento;
 	private final List<Celula> celulas;
-	private final List<Forma> formas;
+	public static List<Forma> formas;
 	private final Ouvinte ouvinte;
 	private final Visao visao;
 	private Peca pecaProxima;
-	static int grupoVigente;
 	private int totalPecas;
 	private THREAD thread;
 	private int intervalo;
@@ -42,15 +44,14 @@ public class Territorio extends JPanel {
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		filaEvento = new FilaEvento();
 		celulas = new ArrayList<>();
-		formas = new ArrayList<>();
 		setBackground(Color.WHITE);
 		this.ouvinte = visao;
-		inicializarFormas();
 		this.visao = visao;
 	}
 
-	private void inicializarFormas() {
-		// formas.add(new _QuadradoOco());
+	static {
+		formas = new ArrayList<>();
+		formas.add(new QuadradoOco());
 		formas.add(new Barra());
 		formas.add(new MiniBarra());
 		formas.add(new Ponto());
@@ -61,6 +62,8 @@ public class Territorio extends JPanel {
 		formas.add(new MiniL());
 		formas.add(new MiniT());
 		formas.add(new MiniU());
+		formas.add(new MiniZJ());
+		formas.add(new MiniZL());
 	}
 
 	public void paint(Graphics g) {
@@ -81,7 +84,7 @@ public class Territorio extends JPanel {
 	}
 
 	public void pausarReiniciar() {
-		filaEvento.adicionar(new Acao(grupoVigente) {
+		filaEvento.adicionar(new Acao("PAUSAR_REINICIAR") {
 			public void executar() {
 				if (thread == null) {
 					thread = new THREAD();
@@ -95,7 +98,7 @@ public class Territorio extends JPanel {
 	}
 
 	public void girar(byte sentido) {
-		filaEvento.adicionar(new Acao(grupoVigente) {
+		filaEvento.adicionar(new Acao("GIRAR=" + sentido) {
 			public void executar() {
 				if (peca == null) {
 					return;
@@ -107,7 +110,7 @@ public class Territorio extends JPanel {
 	}
 
 	public void deslocar(byte direcao) {
-		filaEvento.adicionar(new Acao(grupoVigente) {
+		filaEvento.adicionar(new Acao("DESLOCAR=" + direcao) {
 			public void executar() {
 				if (peca == null) {
 					return;
@@ -121,14 +124,17 @@ public class Territorio extends JPanel {
 	}
 
 	public void ini() {
-		intervalo = Constantes.INTERVALO_MOVIMENTO;
-		final boolean LIMITE_OPACO = false;
-		celulas.clear();
-		totalPecas = 0;
+		peca = null;
+		pecaProxima = null;
+		
 		if (thread != null) {
 			thread.desativar();
 		}
 		thread = null;
+
+		intervalo = Constantes.INTERVALO_MOVIMENTO;
+		celulas.clear();
+		totalPecas = 0;
 
 		List<Celula> colunaEsquerd = new ArrayList<>();
 		List<Celula> colunaDireita = new ArrayList<>();
@@ -137,9 +143,11 @@ public class Territorio extends JPanel {
 		int x = Constantes.DESLOCAMENTO_X_TERRITORIO;
 		y = Constantes.DESLOCAMENTO_Y_TERRITORIO;
 
+		boolean limiteOpaco = false;
+
 		for (int i = 0; i < Constantes.TOTAL_CAMADAS; i++) {
-			colunaEsquerd.add(new Celula(Color.BLACK, x, y, LIMITE_OPACO));
-			colunaDireita.add(new Celula(Color.BLACK, x, y, LIMITE_OPACO));
+			colunaEsquerd.add(new Celula(Color.BLACK, x, y, limiteOpaco));
+			colunaDireita.add(new Celula(Color.BLACK, x, y, limiteOpaco));
 			y += Constantes.LADO_QUADRADO;
 		}
 
@@ -152,7 +160,7 @@ public class Territorio extends JPanel {
 		y -= Constantes.LADO_QUADRADO;
 
 		for (int i = 1; i <= Constantes.TOTAL_COLUNAS; i++) {
-			Celula c = new Celula(Color.BLACK, x, y, LIMITE_OPACO);
+			Celula c = new Celula(Color.BLACK, x, y, limiteOpaco);
 			camadaInferio.add(c);
 
 			for (int j = 0; j < i; j++) {
@@ -164,10 +172,10 @@ public class Territorio extends JPanel {
 		celulas.addAll(colunaDireita);
 		celulas.addAll(camadaInferio);
 
-		xPos = colunaDireita.get(0).x
-				+ Constantes.DESLOCAMENTO_X_POS_TERRITORIO;
+		xPos = colunaDireita.get(0).x + Constantes.DESLOCAMENTO_X_POS_TERRITORIO;
 
 		criarPecaAleatoria();
+		filaEvento.ativar();
 	}
 
 	public void criarPecaAleatoria() {
@@ -179,21 +187,21 @@ public class Territorio extends JPanel {
 			x += Constantes.LADO_QUADRADO;
 		}
 
-		if(pecaProxima == null) {
+		if (pecaProxima == null) {
 			pecaProxima = new Peca(forma, cor, xPos, Constantes.DESLOCAMENTO_Y_TERRITORIO);
 			cor = Constantes.CORES[random.nextInt(Constantes.CORES.length)];
 			forma = formas.get(random.nextInt(formas.size()));
 		}
 
 		peca = new Peca(pecaProxima.getForma(), pecaProxima.getCor(), x, Constantes.DESLOCAMENTO_Y_TERRITORIO);
-		
+
 		pecaProxima = new Peca(forma, cor, xPos, Constantes.DESLOCAMENTO_Y_TERRITORIO);
-		
+
 		repaint();
 	}
 
 	public void descerPeca() {
-		filaEvento.adicionar(new Acao(grupoVigente) {
+		filaEvento.adicionar(new Acao("DESCER") {
 			public void executar() {
 				processar();
 			}
@@ -219,9 +227,11 @@ public class Territorio extends JPanel {
 			}
 
 			if (limiteUltrapassado) {
-				filaEvento.adicionar(new Acao(grupoVigente, true) {
+				thread.desativar();
+				filaEvento.desativar();
+
+				filaEvento.adicionar(new Acao("PERDEU", true) {
 					public void executar() {
-						thread.desativar();
 						ouvinte.limiteUltrapassado();
 					}
 				});
@@ -240,17 +250,18 @@ public class Territorio extends JPanel {
 
 		peca = null;
 		totalPecas++;
-		visao.setTitulo("Tamanho = " + totalPecas + " de "
-				+ Constantes.TOTAL_PECAS);
+		visao.setTitulo("Tamanho = " + totalPecas + " de " + Constantes.TOTAL_PECAS);
 
 		if (totalPecas % Constantes.TOTAL_POR_FASE == 0) {
 			intervalo -= Constantes.INTERVALO_DECREMENTO;
 		}
 
 		if (totalPecas >= Constantes.TOTAL_PECAS) {
-			filaEvento.adicionar(new Acao(grupoVigente, true) {
+			thread.desativar();
+			filaEvento.desativar();
+
+			filaEvento.adicionar(new Acao("GANHOU", true) {
 				public void executar() {
-					thread.desativar();
 					ouvinte.tamanhoCompletado();
 				}
 			});
@@ -261,8 +272,7 @@ public class Territorio extends JPanel {
 	}
 
 	private void loop() {
-		int indiceValido = Constantes.TOTAL_CAMADAS * 2
-				+ Constantes.TOTAL_COLUNAS;
+		int indiceValido = Constantes.TOTAL_CAMADAS * 2 + Constantes.TOTAL_COLUNAS;
 		List<Celula> marcados = new ArrayList<>();
 
 		int y = this.y;
@@ -316,7 +326,7 @@ public class Territorio extends JPanel {
 
 		public void run() {
 			while (ativo) {
-				filaEvento.adicionar(new Acao(grupoVigente) {
+				filaEvento.adicionar(new Acao("PROCESSAR") {
 					public void executar() {
 						processar();
 					}
