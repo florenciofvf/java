@@ -27,7 +27,7 @@ import br.com.florencio.qb.forma.Ponto;
 import br.com.florencio.qb.forma.Quadrado;
 import br.com.florencio.qb.forma.QuadradoOco;
 
-public class Territorio extends JPanel {
+public class Territorio extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private final Random random = new Random();
 	private final FilaEvento filaEvento;
@@ -39,6 +39,7 @@ public class Territorio extends JPanel {
 	private int totalPecas;
 	private THREAD thread;
 	private int intervalo;
+	static boolean ativo;
 	private Peca peca;
 	private int xPos;
 	private int y;
@@ -72,6 +73,18 @@ public class Territorio extends JPanel {
 	}
 
 	@Override
+	public void run() {
+		while(ativo) {
+			repaint();
+			try {
+				Thread.sleep(139);
+			} catch (InterruptedException e) {
+				ativo = false;
+			}
+		}
+	}
+	
+	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D) g;
@@ -80,16 +93,16 @@ public class Territorio extends JPanel {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		}
 
+		for (Celula c : celulas) {
+			c.desenhar(g2);
+		}
+		
 		if (peca != null) {
 			peca.desenhar(g2);
 		}
 
 		if (pecaProxima != null) {
 			pecaProxima.desenhar(g2);
-		}
-
-		for (Celula c : celulas) {
-			c.desenhar(g2);
 		}
 	}
 
@@ -211,6 +224,9 @@ public class Territorio extends JPanel {
 
 		if (peca.getTotalCelulas() == 1) {
 			peca.setEspecial(random.nextBoolean());
+			if(peca.isEspecial()) {
+				new Thread(this).start();
+			}
 		}
 
 		pecaProxima = new Peca(forma, cor, xPos, Constantes.DESLOCAMENTO_Y_TERRITORIO);
@@ -288,11 +304,7 @@ public class Territorio extends JPanel {
 					peca.especialCelula = destino;
 					
 					if (destino.y == Constantes.DESLOCAMENTO_Y_TERRITORIO) {
-						if (thread != null) {
-							thread.desativar();
-						}
-						filaEvento.desativar();
-
+						parar();
 						filaEvento.adicionar(new Acao("PERDEU", true) {
 							public void executar() {
 								ouvinte.limiteUltrapassado();
@@ -320,11 +332,7 @@ public class Territorio extends JPanel {
 			}
 
 			if (limiteUltrapassado) {
-				if (thread != null) {
-					thread.desativar();
-				}
-				filaEvento.desativar();
-
+				parar();
 				filaEvento.adicionar(new Acao("PERDEU", true) {
 					public void executar() {
 						ouvinte.limiteUltrapassado();
@@ -352,11 +360,7 @@ public class Territorio extends JPanel {
 		}
 
 		if (totalPecas >= Constantes.TOTAL_PECAS) {
-			if (thread != null) {
-				thread.desativar();
-			}
-			filaEvento.desativar();
-
+			parar();
 			filaEvento.adicionar(new Acao("GANHOU", true) {
 				public void executar() {
 					ouvinte.tamanhoCompletado();
@@ -366,6 +370,14 @@ public class Territorio extends JPanel {
 			loop();
 			criarPecaAleatoria();
 		}
+	}
+	
+	private void parar() {
+		ativo = false;
+		if (thread != null) {
+			thread.desativar();
+		}
+		filaEvento.desativar();
 	}
 
 	private void loop() {
@@ -433,7 +445,6 @@ public class Territorio extends JPanel {
 					if (intervalo < 0) {
 						intervalo = 0;
 					}
-
 					Thread.sleep(intervalo);
 				} catch (Exception e) {
 					e.printStackTrace();

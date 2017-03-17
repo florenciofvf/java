@@ -30,7 +30,7 @@ public class Peca {
 
 		for (Celula c : celulas) {
 			if (especial) {
-				c.cor = especialCor ? Color.BLACK : Color.RED;
+				c.cor = especialCor ? Color.BLACK : Color.CYAN;
 			}
 
 			c.desenhar(g2);

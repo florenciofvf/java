@@ -45,6 +45,7 @@ public class FilaEvento {
 						System.out.println("DESCARTANDO: " + acao);
 					}
 				} catch (Exception e) {
+					Territorio.ativo = false;
 					valida = false;
 					e.printStackTrace();
 				}

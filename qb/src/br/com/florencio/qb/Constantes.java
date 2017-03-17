@@ -11,7 +11,7 @@ public class Constantes {
 
 	public static final boolean DESENHAR_PECA_CIRCULAR = false;
 
-	public static final boolean GERAR_PECAS_COLORIDAS = true;
+	public static final boolean GERAR_PECAS_COLORIDAS = false;
 
 	public static final short DESLOCAMENTO_X_POS_TERRITORIO = 50;
 
