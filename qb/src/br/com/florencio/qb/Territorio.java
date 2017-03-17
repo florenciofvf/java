@@ -27,9 +27,10 @@ import br.com.florencio.qb.forma.Ponto;
 import br.com.florencio.qb.forma.Quadrado;
 import br.com.florencio.qb.forma.QuadradoOco;
 
-public class Territorio extends JPanel implements Runnable {
+public class Territorio extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private final Random random = new Random();
+	private static ThreadPaint threadPaint;
 	private final FilaEvento filaEvento;
 	private final List<Celula> celulas;
 	public static List<Forma> formas;
@@ -39,7 +40,6 @@ public class Territorio extends JPanel implements Runnable {
 	private int totalPecas;
 	private THREAD thread;
 	private int intervalo;
-	static boolean ativo;
 	private Peca peca;
 	private int xPos;
 	private int y;
@@ -73,18 +73,6 @@ public class Territorio extends JPanel implements Runnable {
 	}
 
 	@Override
-	public void run() {
-		while(ativo) {
-			repaint();
-			try {
-				Thread.sleep(139);
-			} catch (InterruptedException e) {
-				ativo = false;
-			}
-		}
-	}
-	
-	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D) g;
@@ -96,7 +84,7 @@ public class Territorio extends JPanel implements Runnable {
 		for (Celula c : celulas) {
 			c.desenhar(g2);
 		}
-		
+
 		if (peca != null) {
 			peca.desenhar(g2);
 		}
@@ -204,6 +192,7 @@ public class Territorio extends JPanel implements Runnable {
 	}
 
 	public void criarPecaAleatoria() {
+		pararThreadPaint();
 		int x = Constantes.DESLOCAMENTO_X_TERRITORIO + Constantes.LADO_QUADRADO;
 		Color cor = Constantes.GERAR_PECAS_COLORIDAS ? Constantes.CORES[random.nextInt(Constantes.CORES.length)]
 				: Color.BLACK;
@@ -224,8 +213,8 @@ public class Territorio extends JPanel implements Runnable {
 
 		if (peca.getTotalCelulas() == 1) {
 			peca.setEspecial(random.nextBoolean());
-			if(peca.isEspecial()) {
-				new Thread(this).start();
+			if (peca.isEspecial()) {
+				iniciarThreadPaint();
 			}
 		}
 
@@ -287,6 +276,9 @@ public class Territorio extends JPanel implements Runnable {
 				Celula destino = peca.especialCelula;
 				Celula celula = peca.getCelulas().get(0);
 				if (destino.x == celula.x && destino.y == celula.y) {
+					if (!Constantes.GERAR_PECAS_COLORIDAS) {
+						celula.cor = Color.BLACK;
+					}
 					loopRecortar();
 				} else {
 					peca.deslocar(Constantes.DIRECAO_SUL);
@@ -302,7 +294,7 @@ public class Territorio extends JPanel implements Runnable {
 						throw new RuntimeException();
 					}
 					peca.especialCelula = destino;
-					
+
 					if (destino.y == Constantes.DESLOCAMENTO_Y_TERRITORIO) {
 						parar();
 						filaEvento.adicionar(new Acao("PERDEU", true) {
@@ -371,9 +363,8 @@ public class Territorio extends JPanel implements Runnable {
 			criarPecaAleatoria();
 		}
 	}
-	
+
 	private void parar() {
-		ativo = false;
 		if (thread != null) {
 			thread.desativar();
 		}
@@ -451,5 +442,37 @@ public class Territorio extends JPanel implements Runnable {
 				}
 			}
 		}
+	}
+	
+	class ThreadPaint extends Thread {
+		boolean ativo = true;
+		
+		void desativar() {
+			ativo = false;
+		}
+
+		public void run() {
+			while (ativo) {
+				repaint();
+				try {
+					Thread.sleep(139);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	static void pararThreadPaint() {
+		if(threadPaint != null) {
+			threadPaint.desativar();
+		}
+		threadPaint = null;
+	}
+	
+	void iniciarThreadPaint() {
+		pararThreadPaint();
+		threadPaint = new ThreadPaint();
+		threadPaint.start();
 	}
 }
