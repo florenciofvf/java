@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import br.com.florencio.qb.forma.Barra;
+import br.com.florencio.qb.forma.Cruz;
 import br.com.florencio.qb.forma.Estrela;
 import br.com.florencio.qb.forma.J;
 import br.com.florencio.qb.forma.L;
@@ -19,6 +20,7 @@ import br.com.florencio.qb.forma.MiniBarra;
 import br.com.florencio.qb.forma.MiniL;
 import br.com.florencio.qb.forma.MiniT;
 import br.com.florencio.qb.forma.MiniU;
+import br.com.florencio.qb.forma.MiniUPonta;
 import br.com.florencio.qb.forma.MiniZJ;
 import br.com.florencio.qb.forma.MiniZL;
 import br.com.florencio.qb.forma.Ponto;
@@ -65,6 +67,8 @@ public class Territorio extends JPanel {
 		formas.add(new MiniU());
 		formas.add(new MiniZJ());
 		formas.add(new MiniZL());
+		formas.add(new Cruz());
+		formas.add(new MiniUPonta());
 	}
 
 	@Override
