@@ -125,9 +125,13 @@ public class Territorio extends JPanel {
 				if (peca == null) {
 					return;
 				}
-				if (peca.podeDeslocar(celulas, direcao)) {
-					peca.deslocar(direcao);
-					repaint();
+				if (Constantes.DIRECAO_LESTE == direcao || Constantes.DIRECAO_OESTE == direcao) {
+					if (peca.podeDeslocar(celulas, direcao)) {
+						peca.deslocar(direcao);
+						repaint();
+					}
+				} else {
+					processar();
 				}
 			}
 		});
@@ -205,6 +209,10 @@ public class Territorio extends JPanel {
 
 		peca = new Peca(pecaProxima.getForma(), pecaProxima.getCor(), x, Constantes.DESLOCAMENTO_Y_TERRITORIO);
 
+		if (peca.getTotalCelulas() == 1) {
+			peca.setEspecial(random.nextBoolean());
+		}
+
 		pecaProxima = new Peca(forma, cor, xPos, Constantes.DESLOCAMENTO_Y_TERRITORIO);
 
 		repaint();
@@ -218,8 +226,83 @@ public class Territorio extends JPanel {
 		});
 	}
 
+	private Celula obterDestino(Celula celula) {
+		List<Celula> mesmoX = new ArrayList<>();
+		Celula resposta = null;
+
+		for (Celula c : celulas) {
+			if (c.x == celula.x) {
+				mesmoX.add(c);
+			}
+		}
+
+		int y = this.y;
+
+		while (y >= Constantes.DESLOCAMENTO_Y_TERRITORIO) {
+			resposta = new Celula(celula.cor, celula.x, y);
+
+			boolean contem = false;
+
+			for (Celula c : mesmoX) {
+				if (c.y == y) {
+					contem = true;
+					break;
+				}
+			}
+
+			if (!contem) {
+				break;
+			}
+
+			y -= Constantes.LADO_QUADRADO;
+		}
+
+		return resposta;
+	}
+
 	private void processar() {
 		if (peca == null) {
+			return;
+		}
+
+		if (peca.isEspecial()) {
+
+			if (peca.especialCelula != null) {
+				Celula destino = peca.especialCelula;
+				Celula celula = peca.getCelulas().get(0);
+				if (destino.x == celula.x && destino.y == celula.y) {
+					loopRecortar();
+				} else {
+					peca.deslocar(Constantes.DIRECAO_SUL);
+				}
+			} else {
+				if (peca.podeDeslocar(celulas, Constantes.DIRECAO_SUL)) {
+					peca.deslocar(Constantes.DIRECAO_SUL);
+				} else {
+					peca.setTravadoHorizontal(true);
+					Celula celula = peca.getCelulas().get(0);
+					Celula destino = obterDestino(celula);
+					if (destino == null) {
+						throw new RuntimeException();
+					}
+					peca.especialCelula = destino;
+					
+					if (destino.y == Constantes.DESLOCAMENTO_Y_TERRITORIO) {
+						if (thread != null) {
+							thread.desativar();
+						}
+						filaEvento.desativar();
+
+						filaEvento.adicionar(new Acao("PERDEU", true) {
+							public void executar() {
+								ouvinte.limiteUltrapassado();
+							}
+						});
+					}
+				}
+			}
+
+			repaint();
 			return;
 		}
 
@@ -237,7 +320,7 @@ public class Territorio extends JPanel {
 			}
 
 			if (limiteUltrapassado) {
-				if(thread != null) {
+				if (thread != null) {
 					thread.desativar();
 				}
 				filaEvento.desativar();
@@ -269,7 +352,7 @@ public class Territorio extends JPanel {
 		}
 
 		if (totalPecas >= Constantes.TOTAL_PECAS) {
-			if(thread != null) {
+			if (thread != null) {
 				thread.desativar();
 			}
 			filaEvento.desativar();

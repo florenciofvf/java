@@ -93,7 +93,7 @@ public class Catalogo extends JPanel {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 				g.setColor(c);
 			}
-			
+
 			if (peca != null) {
 				peca.desenhar(g2);
 			}

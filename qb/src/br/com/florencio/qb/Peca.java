@@ -6,12 +6,16 @@ import java.util.List;
 
 public class Peca {
 	private final List<Celula> celulas;
+	private boolean travadoHorizontal;
 	private byte orientacaoMemento;
 	private byte direcaoMemento;
+	private boolean especialCor;
 	private final Forma forma;
 	private short grauMemento;
+	private boolean especial;
 	private byte orientacao;
 	private final Color cor;
+	Celula especialCelula;
 	private byte direcao;
 	private short grau;
 
@@ -22,12 +26,24 @@ public class Peca {
 	}
 
 	public void desenhar(Graphics2D g2) {
+		especialCor = !especialCor;
+
 		for (Celula c : celulas) {
+			if (especial) {
+				c.cor = especialCor ? Color.BLACK : Color.RED;
+			}
+
 			c.desenhar(g2);
 		}
 	}
 
 	public void deslocar(byte direcao) {
+		if (travadoHorizontal) {
+			if (Constantes.DIRECAO_LESTE == direcao || Constantes.DIRECAO_OESTE == direcao) {
+				return;
+			}
+		}
+
 		for (Celula c : celulas) {
 			c.deslocar(direcao);
 		}
@@ -55,6 +71,12 @@ public class Peca {
 	}
 
 	public boolean podeDeslocar(List<Celula> outras, byte direcao) {
+		if (travadoHorizontal) {
+			if (Constantes.DIRECAO_LESTE == direcao || Constantes.DIRECAO_OESTE == direcao) {
+				return false;
+			}
+		}
+
 		for (int i = 0; i < outras.size(); i++) {
 			Celula outra = outras.get(i);
 
@@ -70,6 +92,10 @@ public class Peca {
 
 	public List<Celula> getCelulas() {
 		return celulas;
+	}
+
+	public int getTotalCelulas() {
+		return celulas.size();
 	}
 
 	public byte getOrientacao() {
@@ -112,5 +138,21 @@ public class Peca {
 
 	public Color getCor() {
 		return cor;
+	}
+
+	public boolean isTravadoHorizontal() {
+		return travadoHorizontal;
+	}
+
+	public void setTravadoHorizontal(boolean travadoHorizontal) {
+		this.travadoHorizontal = travadoHorizontal;
+	}
+
+	public boolean isEspecial() {
+		return especial;
+	}
+
+	public void setEspecial(boolean especial) {
+		this.especial = especial;
 	}
 }

@@ -5,10 +5,10 @@ import java.awt.Graphics2D;
 import java.util.List;
 
 public class Celula {
-	private final Color cor;
 	private boolean limite;
 	private int xMemento;
 	private int yMemento;
+	Color cor;
 	int x;
 	int y;
 
