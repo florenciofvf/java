@@ -61,6 +61,7 @@ public class Catalogo extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					selecionado = !selecionado;
+					peca.girar(new ArrayList<>(), Constantes.SENTIDO_HORARIO);
 					repaint();
 				}
 			});
@@ -92,6 +93,7 @@ public class Catalogo extends JPanel {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 				g.setColor(c);
 			}
+			
 			if (peca != null) {
 				peca.desenhar(g2);
 			}
