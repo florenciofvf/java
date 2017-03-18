@@ -45,7 +45,7 @@ public class Constantes {
 
 	public static final short LARGURA_JANELA = 600;
 
-	public static final short ALTURA_JANELA = 500;
+	public static final short ALTURA_JANELA = 600;
 
 	public static final byte DIRECAO_NORTE = 0;
 

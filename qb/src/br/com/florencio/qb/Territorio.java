@@ -150,6 +150,7 @@ public class Territorio extends JPanel {
 		intervalo = Constantes.INTERVALO_MOVIMENTO;
 		celulas.clear();
 		totalPecas = 0;
+		titulo();
 
 		List<Celula> colunaEsquerd = new ArrayList<>();
 		List<Celula> colunaDireita = new ArrayList<>();
@@ -194,8 +195,7 @@ public class Territorio extends JPanel {
 	public void criarPecaAleatoria() {
 		pararThreadPaint();
 		int x = Constantes.DESLOCAMENTO_X_TERRITORIO + Constantes.LADO_QUADRADO;
-		Color cor = Constantes.GERAR_PECAS_COLORIDAS ? Constantes.CORES[random.nextInt(Constantes.CORES.length)]
-				: Color.BLACK;
+		Color cor = Constantes.GERAR_PECAS_COLORIDAS ? Constantes.CORES[random.nextInt(Constantes.CORES.length)] : Color.BLACK;
 		Forma forma = formas.get(random.nextInt(formas.size()));
 
 		for (int y = 0; y < Constantes.TOTAL_COLUNAS / 2; y++) {
@@ -204,22 +204,26 @@ public class Territorio extends JPanel {
 
 		if (pecaProxima == null) {
 			pecaProxima = new Peca(forma, cor, xPos, Constantes.DESLOCAMENTO_Y_TERRITORIO);
-			cor = Constantes.GERAR_PECAS_COLORIDAS ? Constantes.CORES[random.nextInt(Constantes.CORES.length)]
-					: Color.BLACK;
+			if (pecaProxima.getTotalCelulas() == 1) {
+				pecaProxima.setEspecial(random.nextBoolean());
+			}
+			
+			cor = Constantes.GERAR_PECAS_COLORIDAS ? Constantes.CORES[random.nextInt(Constantes.CORES.length)] : Color.BLACK;
 			forma = formas.get(random.nextInt(formas.size()));
 		}
 
 		peca = new Peca(pecaProxima.getForma(), pecaProxima.getCor(), x, Constantes.DESLOCAMENTO_Y_TERRITORIO);
-
-		if (peca.getTotalCelulas() == 1) {
-			peca.setEspecial(random.nextBoolean());
-			if (peca.isEspecial()) {
-				iniciarThreadPaint();
-			}
+		peca.setEspecial(pecaProxima.isEspecial());
+		
+		pecaProxima = new Peca(forma, cor, xPos, Constantes.DESLOCAMENTO_Y_TERRITORIO);
+		if (pecaProxima.getTotalCelulas() == 1) {
+			pecaProxima.setEspecial(random.nextBoolean());
 		}
 
-		pecaProxima = new Peca(forma, cor, xPos, Constantes.DESLOCAMENTO_Y_TERRITORIO);
-
+		if(peca.isEspecial() || pecaProxima.isEspecial()) {
+			iniciarThreadPaint();
+		}
+		
 		repaint();
 	}
 
@@ -338,6 +342,10 @@ public class Territorio extends JPanel {
 		repaint();
 	}
 
+	private void titulo() {
+		visao.setTitulo("Tamanho = " + totalPecas + " de " + Constantes.TOTAL_PECAS);
+	}
+	
 	private void loopRecortar() {
 		for (Celula c : peca.getCelulas()) {
 			celulas.add(c.clonar());
@@ -345,8 +353,8 @@ public class Territorio extends JPanel {
 
 		peca = null;
 		totalPecas++;
-		visao.setTitulo("Tamanho = " + totalPecas + " de " + Constantes.TOTAL_PECAS);
-
+		titulo();
+		
 		if (totalPecas % Constantes.TOTAL_POR_FASE == 0) {
 			intervalo -= Constantes.INTERVALO_DECREMENTO;
 		}
