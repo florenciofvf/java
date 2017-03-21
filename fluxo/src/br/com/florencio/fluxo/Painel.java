@@ -68,7 +68,7 @@ public class Painel extends JPanel {
 						return;
 					}
 
-					String descricao = JOptionPane.showInputDialog(Painel.this, objeto.getDescricao());
+					String descricao = JOptionPane.showInputDialog(Painel.this, objeto.getDescricao(), objeto.getDescricao());
 
 					if (descricao == null || descricao.trim().length() == 0) {
 						return;
@@ -85,7 +85,7 @@ public class Painel extends JPanel {
 		menuItemAbrirArquivo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				arquivo = JOptionPane.showInputDialog(Painel.this, arquivo);
+				arquivo = JOptionPane.showInputDialog(Painel.this, arquivo, arquivo);
 
 				if (arquivo != null && arquivo.trim().length() > 0) {
 					arquivo += Arquivo.SUFIXO;
