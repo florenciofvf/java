@@ -20,6 +20,19 @@ public class Arquivo {
 		pw.close();
 	}
 
+	public static String semSufixo(String s) {
+		if (s == null) {
+			return "";
+		}
+
+		if (s.endsWith(Arquivo.SUFIXO)) {
+			int pos = s.lastIndexOf(Arquivo.SUFIXO);
+			s = s.substring(0, pos);
+		}
+
+		return s;
+	}
+
 	public static Instancia lerArquivo(File file) throws Exception {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser parser = factory.newSAXParser();

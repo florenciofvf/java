@@ -16,12 +16,7 @@ public class Instancia {
 	private Local local;
 
 	public Instancia(String descricao) {
-		if (descricao.endsWith(Arquivo.SUFIXO)) {
-			int pos = descricao.lastIndexOf(Arquivo.SUFIXO);
-			this.descricao = descricao.substring(0, pos);
-		} else {
-			this.descricao = descricao;
-		}
+		this.descricao = Arquivo.semSufixo(descricao);
 		filhos = new ArrayList<>();
 		linhas = new ArrayList<>();
 		dimensao = new Dimensao();

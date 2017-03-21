@@ -85,7 +85,7 @@ public class Painel extends JPanel {
 		menuItemAbrirArquivo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				arquivo = JOptionPane.showInputDialog(Painel.this, arquivo, arquivo);
+				arquivo = JOptionPane.showInputDialog(Painel.this, Arquivo.semSufixo(arquivo), Arquivo.semSufixo(arquivo));
 
 				if (arquivo != null && arquivo.trim().length() > 0) {
 					arquivo += Arquivo.SUFIXO;
