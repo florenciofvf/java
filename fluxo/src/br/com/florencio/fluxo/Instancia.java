@@ -8,10 +8,10 @@ import java.util.List;
 
 public class Instancia {
 	private List<Instancia> filhos;
-	private final String descricao;
 	private boolean selecionado;
 	private List<Linha> linhas;
 	private Dimensao dimensao;
+	private String descricao;
 	private Instancia pai;
 	private Local local;
 
@@ -256,5 +256,9 @@ public class Instancia {
 		}
 
 		Arquivo.finalTag(tab, this, pw);
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 }

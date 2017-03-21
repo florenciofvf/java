@@ -1,7 +1,7 @@
 package br.com.florencio.fluxo;
 
 public class Dimensao {
-	public static final short LARGURA_PADRAO = 100;
+	public static final short LARGURA_PADRAO = 180;
 	public static final byte ALTURA_PADRAO = 20;
 	public static final byte MARGEM_DIREITA = 40;
 	public static int larguraTotal;

@@ -58,6 +58,28 @@ public class Painel extends JPanel {
 					popup.show(Painel.this, e.getX(), e.getY());
 				}
 			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2 && raiz != null) {
+					Instancia objeto = raiz.procurar(e.getX(), e.getY());
+
+					if (objeto == null) {
+						return;
+					}
+
+					String descricao = JOptionPane.showInputDialog(Painel.this, objeto.getDescricao());
+
+					if (descricao == null || descricao.trim().length() == 0) {
+						return;
+					}
+
+					objeto.setDescricao(descricao);
+					raiz.organizar();
+					tamanhoPainel();
+					repaint();
+				}
+			}
 		});
 
 		menuItemAbrirArquivo.addActionListener(new ActionListener() {
