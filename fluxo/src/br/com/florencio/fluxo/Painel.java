@@ -17,8 +17,7 @@ import javax.swing.JPopupMenu;
 
 public class Painel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JMenuItem menuItemSalvarArquivo = new JMenuItem("Salvar arquivo");
-	private JMenuItem menuItemAbrirArquivo = new JMenuItem("Abrir arquivo");
+	private JMenuItem menuItemMargemInferior = new JMenuItem("Margem Inferior");
 	private JMenuItem menuItemExcluir = new JMenuItem("Excluir");
 	private JMenuItem menuItemCopiar = new JMenuItem("Copiar");
 	private JMenuItem menuItemColar = new JMenuItem("Colar");
@@ -32,15 +31,13 @@ public class Painel extends JPanel {
 	public Painel(Instancia raiz) {
 		this.raiz = raiz;
 		registrarEventos();
-
-		popup.add(menuItemSalvarArquivo);
-		popup.add(menuItemAbrirArquivo);
-		popup.addSeparator();
 		popup.add(menuItemNovo);
 		popup.add(menuItemExcluir);
 		popup.addSeparator();
 		popup.add(menuItemCopiar);
 		popup.add(menuItemColar);
+		popup.addSeparator();
+		popup.add(menuItemMargemInferior);
 	}
 
 	private void tamanhoPainel() {
@@ -68,7 +65,8 @@ public class Painel extends JPanel {
 						return;
 					}
 
-					String descricao = JOptionPane.showInputDialog(Painel.this, objeto.getDescricao(), objeto.getDescricao());
+					String descricao = JOptionPane.showInputDialog(Painel.this, objeto.getDescricao(),
+							objeto.getDescricao());
 
 					if (descricao == null || descricao.trim().length() == 0) {
 						return;
@@ -79,27 +77,6 @@ public class Painel extends JPanel {
 					tamanhoPainel();
 					repaint();
 				}
-			}
-		});
-
-		menuItemAbrirArquivo.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				arquivo = JOptionPane.showInputDialog(Painel.this, Arquivo.semSufixo(arquivo), Arquivo.semSufixo(arquivo));
-
-				if (arquivo != null && arquivo.trim().length() > 0) {
-					arquivo += Arquivo.SUFIXO;
-					abrirArquivo();
-				} else {
-					arquivo = null;
-				}
-			}
-		});
-
-		menuItemSalvarArquivo.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				salvarArquivo();
 			}
 		});
 
@@ -122,6 +99,32 @@ public class Painel extends JPanel {
 				raiz.organizar();
 				tamanhoPainel();
 				repaint();
+			}
+		});
+
+		menuItemMargemInferior.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto == null) {
+					return;
+				}
+
+				String valor = JOptionPane.showInputDialog(Painel.this, objeto.getDescricao(), objeto.margemInferior);
+
+				if (valor == null || valor.trim().length() == 0) {
+					return;
+				}
+
+				try {
+					objeto.margemInferior = Integer.parseInt(valor);
+					raiz.organizar();
+					tamanhoPainel();
+					repaint();
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(Painel.this, ex.getMessage());
+				}
 			}
 		});
 
@@ -175,6 +178,17 @@ public class Painel extends JPanel {
 		});
 	}
 
+	public void setArquivo(String arq) {
+		arquivo = Arquivo.semSufixo(arq);
+
+		if (arquivo != null && arquivo.trim().length() > 0) {
+			arquivo += Arquivo.SUFIXO;
+			abrirArquivo();
+		} else {
+			arquivo = null;
+		}
+	}
+
 	private void abrirArquivo() {
 		try {
 			File file = new File(arquivo);
@@ -192,7 +206,7 @@ public class Painel extends JPanel {
 		}
 	}
 
-	private void salvarArquivo() {
+	public void salvarArquivo() {
 		if (arquivo == null || raiz == null) {
 			return;
 		}
@@ -212,5 +226,9 @@ public class Painel extends JPanel {
 		super.paint(g);
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		raiz.desenhar((Graphics2D) g);
+	}
+
+	public String getArquivo() {
+		return arquivo;
 	}
 }

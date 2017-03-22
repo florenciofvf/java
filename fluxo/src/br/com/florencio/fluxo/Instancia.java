@@ -14,6 +14,7 @@ public class Instancia {
 	private String descricao;
 	private Instancia pai;
 	private Local local;
+	int margemInferior;
 
 	public Instancia(String descricao) {
 		this.descricao = Arquivo.semSufixo(descricao);
@@ -138,6 +139,8 @@ public class Instancia {
 			dimensao.altura = Dimensao.ALTURA_PADRAO;
 		}
 
+		dimensao.altura += margemInferior;
+
 		return dimensao.altura;
 	}
 
@@ -158,7 +161,8 @@ public class Instancia {
 	}
 
 	public void centralizarY() {
-		local.y += (dimensao.altura - Dimensao.ALTURA_PADRAO) / 2;
+		local.y += (dimensao.altura - margemInferior - Dimensao.ALTURA_PADRAO) / 2;
+		local.y += local.yTop;
 		dimensao.altura = Dimensao.ALTURA_PADRAO;
 
 		for (Instancia i : filhos) {

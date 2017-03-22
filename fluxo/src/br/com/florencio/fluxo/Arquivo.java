@@ -51,7 +51,8 @@ public class Arquivo {
 	}
 
 	public static void inicioTag(String tab, Instancia i, PrintWriter pw) {
-		pw.print(tab + "<instancia nome=" + citar(i.getDescricao()));
+		pw.print(
+				tab + "<instancia nome=" + citar(i.getDescricao()) + " margemInferior=" + citar("" + i.margemInferior));
 
 		if (i.isVazio()) {
 			pw.println("/>");
@@ -74,6 +75,11 @@ public class Arquivo {
 		public void startElement(String uri, String localName, String qName, Attributes attributes)
 				throws SAXException {
 			Instancia i = new Instancia(attributes.getValue("nome"));
+			String s = attributes.getValue("margemInferior");
+
+			if (s != null && s.trim().length() > 0) {
+				i.margemInferior = Integer.parseInt(s);
+			}
 
 			if (raiz == null) {
 				raiz = i;

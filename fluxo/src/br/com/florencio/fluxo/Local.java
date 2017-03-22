@@ -1,6 +1,7 @@
 package br.com.florencio.fluxo;
 
 public class Local {
+	int yTop = 10;
 	int x;
 	int y;
 
