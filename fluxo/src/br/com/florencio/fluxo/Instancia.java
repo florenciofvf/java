@@ -1,6 +1,7 @@
 package br.com.florencio.fluxo;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -102,17 +103,18 @@ public class Instancia {
 		}
 	}
 
-	public void organizar() {
+	public void organizar(FontMetrics metrics) {
 		Dimensao.larguraTotal = 0;
 		Dimensao.alturaTotal = 0;
 		inicializar();
 		calcularAltura();
 		Dimensao.alturaTotal = dimensao.altura;
 		calcularX();
+		calcularLargura(metrics);
 		calcularY(local.y);
 		centralizarY();
 		afastar(0);
-		calcularLarturaTotal();
+		calcularLarguraTotal();
 		criarLinhas();
 	}
 
@@ -144,6 +146,14 @@ public class Instancia {
 		return dimensao.altura;
 	}
 
+	public void calcularLargura(FontMetrics metrics) {
+		dimensao.largura = metrics.stringWidth(descricao);
+
+		for (Instancia i : filhos) {
+			i.calcularLargura(metrics);
+		}
+	}
+	
 	public void calcularX() {
 		local.x = pai == null ? 0 : pai.local.x + dimensao.largura;
 
@@ -179,13 +189,13 @@ public class Instancia {
 		}
 	}
 
-	private void calcularLarturaTotal() {
+	private void calcularLarguraTotal() {
 		if (local.x + dimensao.largura > Dimensao.larguraTotal) {
 			Dimensao.larguraTotal = local.x + dimensao.largura;
 		}
 
 		for (Instancia i : filhos) {
-			i.calcularLarturaTotal();
+			i.calcularLarguraTotal();
 		}
 	}
 
@@ -248,7 +258,7 @@ public class Instancia {
 	public void imprimir(String tab, PrintWriter pw) {
 		tab += pai != null ? "\t" : "";
 
-		Arquivo.inicioTag(tab, this, pw);
+		Arquivo.inicioTag(tab, this, pw, pai == null);
 
 		for (Instancia i : filhos) {
 			i.imprimir(tab, pw);

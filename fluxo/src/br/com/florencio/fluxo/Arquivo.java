@@ -50,9 +50,13 @@ public class Arquivo {
 		pw.println();
 	}
 
-	public static void inicioTag(String tab, Instancia i, PrintWriter pw) {
+	public static void inicioTag(String tab, Instancia i, PrintWriter pw, boolean comLarguraPadrao) {
 		pw.print(
 				tab + "<instancia nome=" + citar(i.getDescricao()) + " margemInferior=" + citar("" + i.margemInferior));
+
+		if (comLarguraPadrao) {
+			pw.print(" larguraPadrao=" + citar("" + Dimensao.LARGURA_PADRAO));
+		}
 
 		if (i.isVazio()) {
 			pw.println("/>");
@@ -74,21 +78,26 @@ public class Arquivo {
 		@Override
 		public void startElement(String uri, String localName, String qName, Attributes attributes)
 				throws SAXException {
-			Instancia i = new Instancia(attributes.getValue("nome"));
-			String s = attributes.getValue("margemInferior");
+			Instancia instancia = new Instancia(attributes.getValue("nome"));
+			String margemInferior = attributes.getValue("margemInferior");
+			String larguraPadrao = attributes.getValue("larguraPadrao");
 
-			if (s != null && s.trim().length() > 0) {
-				i.margemInferior = Integer.parseInt(s);
+			if (margemInferior != null && margemInferior.trim().length() > 0) {
+				instancia.margemInferior = Integer.parseInt(margemInferior);
+			}
+
+			if (larguraPadrao != null && larguraPadrao.trim().length() > 0) {
+				Dimensao.LARGURA_PADRAO = Short.parseShort(larguraPadrao);
 			}
 
 			if (raiz == null) {
-				raiz = i;
+				raiz = instancia;
 				sel = raiz;
 				return;
 			}
 
-			sel.adicionar(i);
-			sel = i;
+			sel.adicionar(instancia);
+			sel = instancia;
 		}
 
 		@Override

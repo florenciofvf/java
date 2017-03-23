@@ -18,6 +18,7 @@ import javax.swing.JPopupMenu;
 public class Painel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JMenuItem menuItemMargemInferior = new JMenuItem("Margem Inferior");
+	private JMenuItem menuItemLarguraGeral = new JMenuItem("Largura geral");
 	private JMenuItem menuItemExcluir = new JMenuItem("Excluir");
 	private JMenuItem menuItemCopiar = new JMenuItem("Copiar");
 	private JMenuItem menuItemColar = new JMenuItem("Colar");
@@ -38,6 +39,7 @@ public class Painel extends JPanel {
 		popup.add(menuItemColar);
 		popup.addSeparator();
 		popup.add(menuItemMargemInferior);
+		popup.add(menuItemLarguraGeral);
 	}
 
 	private void tamanhoPainel() {
@@ -46,6 +48,10 @@ public class Painel extends JPanel {
 		setMinimumSize(d);
 	}
 
+	private void organizar() {
+		raiz.organizar(getFontMetrics(getFont()));
+	}
+	
 	private void registrarEventos() {
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -73,7 +79,7 @@ public class Painel extends JPanel {
 					}
 
 					objeto.setDescricao(descricao);
-					raiz.organizar();
+					organizar();
 					tamanhoPainel();
 					repaint();
 				}
@@ -96,7 +102,7 @@ public class Painel extends JPanel {
 				}
 
 				objeto.adicionar(new Instancia(descricao));
-				raiz.organizar();
+				organizar();
 				tamanhoPainel();
 				repaint();
 			}
@@ -119,7 +125,27 @@ public class Painel extends JPanel {
 
 				try {
 					objeto.margemInferior = Integer.parseInt(valor);
-					raiz.organizar();
+					organizar();
+					tamanhoPainel();
+					repaint();
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(Painel.this, ex.getMessage());
+				}
+			}
+		});
+
+		menuItemLarguraGeral.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String valor = JOptionPane.showInputDialog(Painel.this, "Largura geral", Dimensao.LARGURA_PADRAO);
+
+				if (valor == null || valor.trim().length() == 0) {
+					return;
+				}
+
+				try {
+					Dimensao.LARGURA_PADRAO = Short.parseShort(valor);
+					organizar();
 					tamanhoPainel();
 					repaint();
 				} catch (Exception ex) {
@@ -141,7 +167,7 @@ public class Painel extends JPanel {
 					objeto.getPai().excluir(objeto);
 				}
 
-				raiz.organizar();
+				organizar();
 				tamanhoPainel();
 				repaint();
 			}
@@ -171,7 +197,7 @@ public class Painel extends JPanel {
 				}
 
 				objeto.adicionar(copiado.clonar());
-				raiz.organizar();
+				organizar();
 				tamanhoPainel();
 				repaint();
 			}
@@ -198,7 +224,7 @@ public class Painel extends JPanel {
 			}
 
 			raiz = Arquivo.lerArquivo(file);
-			raiz.organizar();
+			organizar();
 			tamanhoPainel();
 			repaint();
 		} catch (Exception e) {
