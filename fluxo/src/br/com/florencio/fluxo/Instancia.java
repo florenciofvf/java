@@ -13,9 +13,9 @@ public class Instancia {
 	private List<Linha> linhas;
 	private Dimensao dimensao;
 	private String descricao;
+	int margemInferior = 3;
 	private Instancia pai;
 	private Local local;
-	int margemInferior;
 
 	public Instancia(String descricao) {
 		this.descricao = Arquivo.semSufixo(descricao);
@@ -92,7 +92,7 @@ public class Instancia {
 		g2.setColor(selecionado ? Color.RED : Color.BLACK);
 
 		g2.drawRoundRect(local.x, local.y, dimensao.largura, dimensao.altura, 8, 8);
-		g2.drawString(descricao, local.x + 1, local.y + 15);
+		g2.drawString(descricao, local.x + 2, local.y + 15);
 
 		for (Instancia i : filhos) {
 			i.desenhar(g2);
@@ -109,8 +109,8 @@ public class Instancia {
 		inicializar();
 		calcularAltura();
 		Dimensao.alturaTotal = dimensao.altura;
-		calcularX();
 		calcularLargura(metrics);
+		calcularX();
 		calcularY(local.y);
 		centralizarY();
 		afastar(0);
@@ -147,15 +147,15 @@ public class Instancia {
 	}
 
 	public void calcularLargura(FontMetrics metrics) {
-		dimensao.largura = metrics.stringWidth(descricao);
+		dimensao.largura = metrics.stringWidth(descricao) + 3;
 
 		for (Instancia i : filhos) {
 			i.calcularLargura(metrics);
 		}
 	}
-	
+
 	public void calcularX() {
-		local.x = pai == null ? 0 : pai.local.x + dimensao.largura;
+		local.x = pai == null ? 0 : pai.local.x + pai.dimensao.largura;
 
 		for (Instancia i : filhos) {
 			i.calcularX();
@@ -258,7 +258,7 @@ public class Instancia {
 	public void imprimir(String tab, PrintWriter pw) {
 		tab += pai != null ? "\t" : "";
 
-		Arquivo.inicioTag(tab, this, pw, pai == null);
+		Arquivo.inicioTag(tab, this, pw);
 
 		for (Instancia i : filhos) {
 			i.imprimir(tab, pw);

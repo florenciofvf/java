@@ -50,13 +50,9 @@ public class Arquivo {
 		pw.println();
 	}
 
-	public static void inicioTag(String tab, Instancia i, PrintWriter pw, boolean comLarguraPadrao) {
+	public static void inicioTag(String tab, Instancia i, PrintWriter pw) {
 		pw.print(
 				tab + "<instancia nome=" + citar(i.getDescricao()) + " margemInferior=" + citar("" + i.margemInferior));
-
-		if (comLarguraPadrao) {
-			pw.print(" larguraPadrao=" + citar("" + Dimensao.LARGURA_PADRAO));
-		}
 
 		if (i.isVazio()) {
 			pw.println("/>");
@@ -80,14 +76,9 @@ public class Arquivo {
 				throws SAXException {
 			Instancia instancia = new Instancia(attributes.getValue("nome"));
 			String margemInferior = attributes.getValue("margemInferior");
-			String larguraPadrao = attributes.getValue("larguraPadrao");
 
 			if (margemInferior != null && margemInferior.trim().length() > 0) {
 				instancia.margemInferior = Integer.parseInt(margemInferior);
-			}
-
-			if (larguraPadrao != null && larguraPadrao.trim().length() > 0) {
-				Dimensao.LARGURA_PADRAO = Short.parseShort(larguraPadrao);
 			}
 
 			if (raiz == null) {
