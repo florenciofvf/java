@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 public class Painel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -44,6 +45,7 @@ public class Painel extends JPanel {
 		Dimension d = new Dimension(Dimensao.larguraTotal, Dimensao.alturaTotal);
 		setPreferredSize(d);
 		setMinimumSize(d);
+		SwingUtilities.updateComponentTreeUI(getParent());
 	}
 
 	private void organizar() {
