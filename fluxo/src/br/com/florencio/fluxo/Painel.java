@@ -36,6 +36,7 @@ public class Painel extends JPanel {
 	private JMenuItem menuItemVerde = new JMenuItem("Verde");
 	private JMenuItem menuItemColar = new JMenuItem("Colar");
 	private JMenuItem menuItemNovo = new JMenuItem("Novo");
+	private JMenuItem menuItemAzul = new JMenuItem("Azul");
 	private JPopupMenu popup = new JPopupMenu();
 	private Instancia copiado;
 	private Instancia raiz;
@@ -53,6 +54,7 @@ public class Painel extends JPanel {
 		popup.addSeparator();
 		popup.add(menuItemMargemInferior);
 		popup.addSeparator();
+		popup.add(menuItemAzul);
 		popup.add(menuItemVermelho);
 		popup.add(menuItemLaranja);
 		popup.add(menuItemVerde);
@@ -232,6 +234,18 @@ public class Painel extends JPanel {
 
 				if (objeto != null) {
 					objeto.setCor(Color.ORANGE);
+					repaint();
+				}
+			}
+		});
+
+		menuItemAzul.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto != null) {
+					objeto.setCor(Color.BLUE);
 					repaint();
 				}
 			}
