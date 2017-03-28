@@ -47,7 +47,6 @@ public class Painel extends JPanel {
 		popup.add(menuItemColar);
 		popup.addSeparator();
 		popup.add(menuItemMargemInferior);
-		// setFont(new Font(null, Font.PLAIN, 10));
 	}
 
 	private void tamanhoPainel() {
@@ -221,10 +220,16 @@ public class Painel extends JPanel {
 		}
 	}
 
-	public void salvarArquivo() {
+	public void salvarArquivo(String alternativo) {
+		if (alternativo != null && alternativo.trim().length() > 0) {
+			arquivo = Arquivo.semSufixo(alternativo);
+			arquivo += Arquivo.SUFIXO;
+		}
+
 		if (arquivo == null || raiz == null) {
 			return;
 		}
+
 		try {
 			Arquivo.salvarArquivo(raiz, new File(arquivo));
 		} catch (Exception e) {

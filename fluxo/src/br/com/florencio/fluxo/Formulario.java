@@ -59,7 +59,7 @@ public class Formulario extends JFrame {
 				if (e.getKeyCode() == KeyEvent.VK_A && e.isControlDown()) {
 					abrirArquivo();
 				} else if (e.getKeyCode() == KeyEvent.VK_S && e.isControlDown()) {
-					painel.salvarArquivo();
+					painel.salvarArquivo(textFieldArquivo.getText());
 				}
 			}
 		});
@@ -90,7 +90,7 @@ public class Formulario extends JFrame {
 		menuItemSalvarArquivo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				painel.salvarArquivo();
+				painel.salvarArquivo(null);
 			}
 		});
 	}
