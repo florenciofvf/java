@@ -1,5 +1,6 @@
 package br.com.florencio.fluxo;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.PrintWriter;
 
@@ -54,6 +55,10 @@ public class Arquivo {
 		pw.print(
 				tab + "<instancia nome=" + citar(i.getDescricao()) + " margemInferior=" + citar("" + i.margemInferior));
 
+		if (i.getCor() != null) {
+			pw.print(" cor=" + citar("" + i.getCor().getRGB()));
+		}
+
 		if (i.isVazio()) {
 			pw.println("/>");
 		} else {
@@ -78,10 +83,17 @@ public class Arquivo {
 
 			String margemInferior = attributes.getValue("margemInferior");
 
+			String cor = attributes.getValue("cor");
+
 			if (raiz == null) {
 				if (margemInferior != null && margemInferior.trim().length() > 0) {
 					instancia.margemInferior = Integer.parseInt(margemInferior);
 				}
+
+				if (cor != null && cor.trim().length() > 0) {
+					instancia.setCor(new Color(Integer.parseInt(cor)));
+				}
+
 				raiz = instancia;
 				sel = raiz;
 				return;
@@ -91,6 +103,10 @@ public class Arquivo {
 
 			if (margemInferior != null && margemInferior.trim().length() > 0) {
 				instancia.margemInferior = Integer.parseInt(margemInferior);
+			}
+
+			if (cor != null && cor.trim().length() > 0) {
+				instancia.setCor(new Color(Integer.parseInt(cor)));
 			}
 
 			sel = instancia;

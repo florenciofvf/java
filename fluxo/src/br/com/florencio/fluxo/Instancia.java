@@ -9,13 +9,13 @@ import java.util.List;
 
 public class Instancia {
 	private List<Instancia> filhos;
-	private boolean selecionado;
 	private List<Linha> linhas;
 	private Dimensao dimensao;
 	private String descricao;
 	private Instancia pai;
 	private Local local;
 	int margemInferior;
+	private Color cor;
 
 	public Instancia(String descricao) {
 		this.descricao = Arquivo.semSufixo(descricao);
@@ -141,7 +141,11 @@ public class Instancia {
 	}
 
 	public void desenhar(Graphics2D g2) {
-		g2.setColor(selecionado ? Color.RED : Color.BLACK);
+		Color c = g2.getColor();
+
+		if (cor != null) {
+			g2.setColor(cor);
+		}
 
 		g2.drawRoundRect(local.x, local.y, dimensao.largura, dimensao.altura, 8, 8);
 		g2.drawString(descricao, local.x + 2, local.y + 15);
@@ -153,6 +157,8 @@ public class Instancia {
 		for (Linha l : linhas) {
 			l.desenhar(g2);
 		}
+		
+		g2.setColor(c);
 	}
 
 	public void organizar(FontMetrics metrics) {
@@ -291,14 +297,6 @@ public class Instancia {
 		return obj;
 	}
 
-	public boolean isSelecionado() {
-		return selecionado;
-	}
-
-	public void setSelecionado(boolean selecionado) {
-		this.selecionado = selecionado;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
@@ -321,5 +319,13 @@ public class Instancia {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public Color getCor() {
+		return cor;
+	}
+
+	public void setCor(Color cor) {
+		this.cor = cor;
 	}
 }

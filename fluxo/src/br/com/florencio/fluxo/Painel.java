@@ -1,5 +1,6 @@
 package br.com.florencio.fluxo;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -27,8 +28,12 @@ import javax.swing.SwingUtilities;
 public class Painel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JMenuItem menuItemMargemInferior = new JMenuItem("Margem Inferior");
+	private JMenuItem menuItemVermelho = new JMenuItem("Vermelho");
+	private JMenuItem menuItemLaranja = new JMenuItem("Laranja");
 	private JMenuItem menuItemExcluir = new JMenuItem("Excluir");
+	private JMenuItem menuItemPadrao = new JMenuItem("Padrão");
 	private JMenuItem menuItemCopiar = new JMenuItem("Copiar");
+	private JMenuItem menuItemVerde = new JMenuItem("Verde");
 	private JMenuItem menuItemColar = new JMenuItem("Colar");
 	private JMenuItem menuItemNovo = new JMenuItem("Novo");
 	private JPopupMenu popup = new JPopupMenu();
@@ -47,6 +52,11 @@ public class Painel extends JPanel {
 		popup.add(menuItemColar);
 		popup.addSeparator();
 		popup.add(menuItemMargemInferior);
+		popup.addSeparator();
+		popup.add(menuItemVermelho);
+		popup.add(menuItemLaranja);
+		popup.add(menuItemVerde);
+		popup.add(menuItemPadrao);
 	}
 
 	private void tamanhoPainel() {
@@ -188,6 +198,54 @@ public class Painel extends JPanel {
 				organizar();
 				tamanhoPainel();
 				repaint();
+			}
+		});
+
+		menuItemVermelho.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto != null) {
+					objeto.setCor(Color.RED);
+					repaint();
+				}
+			}
+		});
+
+		menuItemVerde.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto != null) {
+					objeto.setCor(Color.GREEN);
+					repaint();
+				}
+			}
+		});
+
+		menuItemLaranja.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto != null) {
+					objeto.setCor(Color.ORANGE);
+					repaint();
+				}
+			}
+		});
+
+		menuItemPadrao.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto != null) {
+					objeto.setCor(null);
+					repaint();
+				}
 			}
 		});
 	}
