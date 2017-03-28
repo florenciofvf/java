@@ -75,19 +75,24 @@ public class Arquivo {
 		public void startElement(String uri, String localName, String qName, Attributes attributes)
 				throws SAXException {
 			Instancia instancia = new Instancia(attributes.getValue("nome"));
+
 			String margemInferior = attributes.getValue("margemInferior");
 
-			if (margemInferior != null && margemInferior.trim().length() > 0) {
-				instancia.margemInferior = Integer.parseInt(margemInferior);
-			}
-
 			if (raiz == null) {
+				if (margemInferior != null && margemInferior.trim().length() > 0) {
+					instancia.margemInferior = Integer.parseInt(margemInferior);
+				}
 				raiz = instancia;
 				sel = raiz;
 				return;
 			}
 
 			sel.adicionar(instancia);
+
+			if (margemInferior != null && margemInferior.trim().length() > 0) {
+				instancia.margemInferior = Integer.parseInt(margemInferior);
+			}
+
 			sel = instancia;
 		}
 

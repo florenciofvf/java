@@ -13,9 +13,9 @@ public class Instancia {
 	private List<Linha> linhas;
 	private Dimensao dimensao;
 	private String descricao;
-	int margemInferior = 3;
 	private Instancia pai;
 	private Local local;
+	int margemInferior;
 
 	public Instancia(String descricao) {
 		this.descricao = Arquivo.semSufixo(descricao);
@@ -41,6 +41,12 @@ public class Instancia {
 
 		i.pai = this;
 		filhos.add(i);
+
+		if (filhos.size() > 1) {
+			for (Instancia obj : filhos) {
+				obj.margemInferior = Dimensao.MARGEM_INFERIOR;
+			}
+		}
 	}
 
 	public void excluir(Instancia i) {

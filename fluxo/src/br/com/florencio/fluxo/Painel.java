@@ -47,7 +47,7 @@ public class Painel extends JPanel {
 		popup.add(menuItemColar);
 		popup.addSeparator();
 		popup.add(menuItemMargemInferior);
-		//setFont(new Font(null, Font.PLAIN, 10));
+		// setFont(new Font(null, Font.PLAIN, 10));
 	}
 
 	private void tamanhoPainel() {
