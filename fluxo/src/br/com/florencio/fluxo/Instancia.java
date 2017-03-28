@@ -52,6 +52,13 @@ public class Instancia {
 		filhos.remove(i);
 	}
 
+	public void limpar() {
+		while (getTamanho() > 0) {
+			Instancia i = getFilho(0);
+			excluir(i);
+		}
+	}
+
 	public List<Instancia> getFilhos() {
 		return filhos;
 	}
@@ -62,6 +69,45 @@ public class Instancia {
 		}
 
 		return filhos.get(index);
+	}
+
+	public Instancia getFilho(String descricao) {
+		if (descricao == null || descricao.trim().length() == 0) {
+			return null;
+		}
+
+		for (Instancia i : filhos) {
+			if (descricao.equals(i.descricao)) {
+				return i;
+			}
+		}
+
+		return null;
+	}
+
+	public void importar(String[] grafo) {
+		if (grafo == null) {
+			return;
+		}
+
+		Instancia sel = this;
+
+		for (int i = 0; i < grafo.length; i++) {
+			String string = grafo[i];
+
+			if (string == null || string.trim().length() == 0) {
+				break;
+			}
+
+			Instancia obj = sel.getFilho(string);
+
+			if (obj == null) {
+				obj = new Instancia(string);
+				sel.adicionar(obj);
+			}
+
+			sel = obj;
+		}
 	}
 
 	public int getTamanho() {

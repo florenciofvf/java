@@ -23,6 +23,7 @@ public class Formulario extends JFrame {
 	private JMenuItem menuItemSalvarArquivo = new JMenuItem("Salvar arquivo");
 	private JMenuItem menuItemAbrirArquivo = new JMenuItem("Abrir arquivo");
 	private JTextField textFieldArquivo = new JTextField();
+	private JTextField textFieldSQL = new JTextField();
 	private JMenu menuArquivo = new JMenu("Arquivo");
 	private JMenuBar menuBarra = new JMenuBar();
 	private Painel painel;
@@ -48,6 +49,7 @@ public class Formulario extends JFrame {
 		setLayout(new BorderLayout());
 		add(BorderLayout.NORTH, textFieldArquivo);
 		add(BorderLayout.CENTER, new JScrollPane(painel));
+		add(BorderLayout.SOUTH, textFieldSQL);
 	}
 
 	private void registrarEventos() {
@@ -66,6 +68,13 @@ public class Formulario extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				painel.setArquivo(textFieldArquivo.getText());
+			}
+		});
+
+		textFieldSQL.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painel.processarSQL(textFieldSQL.getText());
 			}
 		});
 

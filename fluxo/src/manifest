@@ -1,0 +1,4 @@
+Main-Class: br.com.florencio.fluxo.Main
+Class-Path: ojdbc7.jar
+Manifest-Version: 1.0
+

@@ -8,7 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -39,6 +47,7 @@ public class Painel extends JPanel {
 		popup.add(menuItemColar);
 		popup.addSeparator();
 		popup.add(menuItemMargemInferior);
+		//setFont(new Font(null, Font.PLAIN, 10));
 	}
 
 	private void tamanhoPainel() {
@@ -236,5 +245,62 @@ public class Painel extends JPanel {
 
 	public String getArquivo() {
 		return arquivo;
+	}
+
+	public void processarSQL(String arquivo) {
+		File file = new File(arquivo);
+
+		if (!file.exists()) {
+			return;
+		}
+
+		try {
+			StringBuilder sb = new StringBuilder();
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+			String linha = br.readLine();
+
+			while (linha != null) {
+				sb.append(linha);
+				linha = br.readLine();
+			}
+
+			br.close();
+			raiz.limpar();
+			processar(sb.toString());
+			organizar();
+			tamanhoPainel();
+			repaint();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
+	}
+
+	private void processar(String sql) throws Exception {
+		if (sql.trim().length() == 0) {
+			return;
+		}
+
+		Class.forName(Config.get("driver"));
+		Connection conn = DriverManager.getConnection(Config.get("url"), Config.get("usuario"), Config.get("senha"));
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		ResultSetMetaData meta = rs.getMetaData();
+
+		int colunas = meta.getColumnCount();
+
+		while (rs.next()) {
+			String[] grafo = new String[colunas];
+
+			for (int i = 0; i < colunas; i++) {
+				grafo[i] = rs.getString(i + 1);
+			}
+
+			raiz.importar(grafo);
+		}
+
+		rs.close();
+		ps.close();
+		conn.close();
 	}
 }
