@@ -64,7 +64,7 @@ public class Painel extends JPanel {
 	}
 
 	private void tamanhoPainel() {
-		Dimension d = new Dimension(Dimensao.larguraTotal, Dimensao.alturaTotal);
+		Dimension d = new Dimension(Dimensao.larguraTotal + 139, Dimensao.alturaTotal + 139);
 		setPreferredSize(d);
 		setMinimumSize(d);
 		SwingUtilities.updateComponentTreeUI(getParent());
