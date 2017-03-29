@@ -12,9 +12,9 @@ public class Instancia {
 	private List<Linha> linhas;
 	private Dimensao dimensao;
 	private String descricao;
+	int margemInferior = -1;
 	private Instancia pai;
 	private Local local;
-	int margemInferior;
 	private Color cor;
 
 	public Instancia(String descricao) {
@@ -44,7 +44,9 @@ public class Instancia {
 
 		if (filhos.size() > 1) {
 			for (Instancia obj : filhos) {
-				obj.margemInferior = Dimensao.MARGEM_INFERIOR;
+				if (obj.margemInferior == -1) {
+					obj.margemInferior = Dimensao.MARGEM_INFERIOR;
+				}
 			}
 		}
 	}
@@ -157,7 +159,7 @@ public class Instancia {
 		for (Linha l : linhas) {
 			l.desenhar(g2);
 		}
-		
+
 		g2.setColor(c);
 	}
 
