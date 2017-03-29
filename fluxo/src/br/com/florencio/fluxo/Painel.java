@@ -29,6 +29,7 @@ public class Painel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JMenuItem menuItemMargemInferior = new JMenuItem("Margem Inferior");
 	private JMenuItem menuItemVermelho = new JMenuItem("Vermelho");
+	private JMenuItem menuItemAmarelo = new JMenuItem("Amarelo");
 	private JMenuItem menuItemLaranja = new JMenuItem("Laranja");
 	private JMenuItem menuItemExcluir = new JMenuItem("Excluir");
 	private JMenuItem menuItemPadrao = new JMenuItem("Padrão");
@@ -54,10 +55,11 @@ public class Painel extends JPanel {
 		popup.addSeparator();
 		popup.add(menuItemMargemInferior);
 		popup.addSeparator();
-		popup.add(menuItemAzul);
 		popup.add(menuItemVermelho);
 		popup.add(menuItemLaranja);
+		popup.add(menuItemAmarelo);
 		popup.add(menuItemVerde);
+		popup.add(menuItemAzul);
 		popup.add(menuItemPadrao);
 	}
 
@@ -233,12 +235,24 @@ public class Painel extends JPanel {
 				Instancia objeto = procurar();
 
 				if (objeto != null) {
-					objeto.setCor(Color.ORANGE);
+					objeto.setCor(new Color(255, 170, 70));
 					repaint();
 				}
 			}
 		});
 
+		menuItemAmarelo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto != null) {
+					objeto.setCor(new Color(240, 210, 100));
+					repaint();
+				}
+			}
+		});
+		
 		menuItemAzul.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
