@@ -211,7 +211,7 @@ public class Painel extends JPanel {
 				Instancia objeto = procurar();
 
 				if (objeto != null) {
-					objeto.setCor(Color.RED);
+					objeto.setCor(new Color(255, 50, 50));
 					repaint();
 				}
 			}
@@ -259,7 +259,7 @@ public class Painel extends JPanel {
 				Instancia objeto = procurar();
 
 				if (objeto != null) {
-					objeto.setCor(Color.BLUE);
+					objeto.setCor(new Color(80, 80, 255));
 					repaint();
 				}
 			}

@@ -143,24 +143,41 @@ public class Instancia {
 	}
 
 	public void desenhar(Graphics2D g2) {
-		Color c = g2.getColor();
-
 		if (cor != null) {
+			Color c = g2.getColor();
+
 			g2.setColor(cor);
+			g2.fillRoundRect(local.x, local.y, dimensao.largura, dimensao.altura, 8, 8);
+			
+			g2.setColor(Color.BLACK);
+			g2.drawRoundRect(local.x, local.y, dimensao.largura, dimensao.altura, 8, 8);
+
+			g2.setColor(Color.WHITE);
+			g2.drawString(descricao, local.x + 2, local.y + 15);
+
+			g2.setColor(cor);
+			for (Instancia i : filhos) {
+				i.desenhar(g2);
+			}
+
+			g2.setColor(cor);
+			for (Linha l : linhas) {
+				l.desenhar(g2);
+			}
+
+			g2.setColor(c);
+		} else {
+			g2.drawRoundRect(local.x, local.y, dimensao.largura, dimensao.altura, 8, 8);
+			g2.drawString(descricao, local.x + 2, local.y + 15);
+
+			for (Instancia i : filhos) {
+				i.desenhar(g2);
+			}
+
+			for (Linha l : linhas) {
+				l.desenhar(g2);
+			}
 		}
-
-		g2.drawRoundRect(local.x, local.y, dimensao.largura, dimensao.altura, 8, 8);
-		g2.drawString(descricao, local.x + 2, local.y + 15);
-
-		for (Instancia i : filhos) {
-			i.desenhar(g2);
-		}
-
-		for (Linha l : linhas) {
-			l.desenhar(g2);
-		}
-
-		g2.setColor(c);
 	}
 
 	public void organizar(FontMetrics metrics) {
