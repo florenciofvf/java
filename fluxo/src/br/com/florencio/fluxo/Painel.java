@@ -104,6 +104,20 @@ public class Painel extends JPanel {
 					organizar();
 					tamanhoPainel();
 					repaint();
+				} else {
+
+					Instancia objeto = raiz.procurar(e.getX(), e.getY());
+
+					if (objeto == null) {
+						return;
+					}
+
+					if (objeto.clicadoNoIcone(e.getX(), e.getY())) {
+						objeto.inverterIcone();
+						organizar();
+						tamanhoPainel();
+						repaint();
+					}
 				}
 			}
 		});
@@ -252,7 +266,7 @@ public class Painel extends JPanel {
 				}
 			}
 		});
-		
+
 		menuItemAzul.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

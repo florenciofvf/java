@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Instancia {
 	private List<Instancia> filhos;
+	private boolean minimizado;
 	private List<Linha> linhas;
 	private Dimensao dimensao;
 	private String descricao;
@@ -143,41 +144,96 @@ public class Instancia {
 	}
 
 	public void desenhar(Graphics2D g2) {
+		int largura = dimensao.largura - Dimensao.TAMANHO_ICONE;
+
 		if (cor != null) {
 			Color c = g2.getColor();
 
 			g2.setColor(cor);
-			g2.fillRoundRect(local.x, local.y, dimensao.largura, dimensao.altura, 8, 8);
-			
+			g2.fillRoundRect(local.x, local.y, largura, dimensao.altura, 8, 8);
+
 			g2.setColor(Color.BLACK);
-			g2.drawRoundRect(local.x, local.y, dimensao.largura, dimensao.altura, 8, 8);
+			g2.drawRoundRect(local.x, local.y, largura, dimensao.altura, 8, 8);
+
+			if (filhos.size() > 0) {
+				g2.setColor(cor);
+				g2.fillOval(local.x + largura, local.y + Dimensao.MARGEM_ICONE, Dimensao.TAMANHO_ICONE,
+						Dimensao.TAMANHO_ICONE);
+				g2.setColor(Color.BLACK);
+				g2.drawOval(local.x + largura, local.y + Dimensao.MARGEM_ICONE, Dimensao.TAMANHO_ICONE,
+						Dimensao.TAMANHO_ICONE);
+
+				g2.setColor(Color.BLACK);
+				if (minimizado) {
+					g2.drawLine(local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE,
+							local.x + largura + Dimensao.METADE_ICONE,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.TAMANHO_ICONE);
+					g2.drawLine(local.x + largura, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE,
+							local.x + largura + Dimensao.TAMANHO_ICONE,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
+				} else {
+					// g2.drawLine(local.x + largura, local.y +
+					// Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE, local.x +
+					// largura + Dimensao.TAMANHO_ICONE, local.y +
+					// Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
+				}
+			}
 
 			g2.setColor(Color.WHITE);
 			g2.drawString(descricao, local.x + 2, local.y + 15);
 
-			g2.setColor(cor);
-			for (Instancia i : filhos) {
-				i.desenhar(g2);
-			}
+			if (!minimizado) {
+				g2.setColor(cor);
+				for (Instancia i : filhos) {
+					i.desenhar(g2);
+				}
 
-			g2.setColor(cor);
-			for (Linha l : linhas) {
-				l.desenhar(g2);
+				g2.setColor(cor);
+				for (Linha l : linhas) {
+					l.desenhar(g2);
+				}
 			}
 
 			g2.setColor(c);
 		} else {
-			g2.drawRoundRect(local.x, local.y, dimensao.largura, dimensao.altura, 8, 8);
+			g2.drawRoundRect(local.x, local.y, largura, dimensao.altura, 8, 8);
+
+			if (filhos.size() > 0) {
+				g2.drawOval(local.x + largura, local.y + Dimensao.MARGEM_ICONE, Dimensao.TAMANHO_ICONE,
+						Dimensao.TAMANHO_ICONE);
+				if (minimizado) {
+					g2.drawLine(local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE,
+							local.x + largura + Dimensao.METADE_ICONE,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.TAMANHO_ICONE);
+					g2.drawLine(local.x + largura, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE,
+							local.x + largura + Dimensao.TAMANHO_ICONE,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
+				} else {
+					// g2.drawLine(local.x + largura, local.y +
+					// Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE, local.x +
+					// largura + Dimensao.TAMANHO_ICONE, local.y +
+					// Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
+				}
+			}
+
 			g2.drawString(descricao, local.x + 2, local.y + 15);
 
-			for (Instancia i : filhos) {
-				i.desenhar(g2);
-			}
+			if (!minimizado) {
+				for (Instancia i : filhos) {
+					i.desenhar(g2);
+				}
 
-			for (Linha l : linhas) {
-				l.desenhar(g2);
+				for (Linha l : linhas) {
+					l.desenhar(g2);
+				}
 			}
 		}
+	}
+
+	public boolean clicadoNoIcone(int x, int y) {
+		int X = local.x + dimensao.largura - Dimensao.TAMANHO_ICONE;
+		int Y = local.y + Dimensao.MARGEM_ICONE;
+		return (x >= X && x <= X + Dimensao.TAMANHO_ICONE) && (y >= Y && y <= Y + Dimensao.TAMANHO_ICONE);
 	}
 
 	public void organizar(FontMetrics metrics) {
@@ -208,8 +264,10 @@ public class Instancia {
 	public int calcularAltura() {
 		int total = 0;
 
-		for (Instancia i : filhos) {
-			total += i.calcularAltura();
+		if (!minimizado) {
+			for (Instancia i : filhos) {
+				total += i.calcularAltura();
+			}
 		}
 
 		dimensao.altura = total;
@@ -224,26 +282,32 @@ public class Instancia {
 	}
 
 	public void calcularLargura(FontMetrics metrics) {
-		dimensao.largura = metrics.stringWidth(descricao) + 3;
+		dimensao.largura = metrics.stringWidth(descricao) + 3 + Dimensao.TAMANHO_ICONE;
 
-		for (Instancia i : filhos) {
-			i.calcularLargura(metrics);
+		if (!minimizado) {
+			for (Instancia i : filhos) {
+				i.calcularLargura(metrics);
+			}
 		}
 	}
 
 	public void calcularX() {
 		local.x = pai == null ? 0 : pai.local.x + pai.dimensao.largura;
 
-		for (Instancia i : filhos) {
-			i.calcularX();
+		if (!minimizado) {
+			for (Instancia i : filhos) {
+				i.calcularX();
+			}
 		}
 	}
 
 	public void calcularY(int yPai) {
-		for (Instancia i : filhos) {
-			i.local.y = yPai;
-			yPai += i.dimensao.altura;
-			i.calcularY(i.local.y);
+		if (!minimizado) {
+			for (Instancia i : filhos) {
+				i.local.y = yPai;
+				yPai += i.dimensao.altura;
+				i.calcularY(i.local.y);
+			}
 		}
 	}
 
@@ -252,8 +316,10 @@ public class Instancia {
 		local.y += local.yTop;
 		dimensao.altura = Dimensao.ALTURA_PADRAO;
 
-		for (Instancia i : filhos) {
-			i.centralizarY();
+		if (!minimizado) {
+			for (Instancia i : filhos) {
+				i.centralizarY();
+			}
 		}
 	}
 
@@ -261,8 +327,10 @@ public class Instancia {
 		int totalAcumulado = acumulado + Dimensao.MARGEM_DIREITA;
 		local.x += totalAcumulado;
 
-		for (Instancia i : filhos) {
-			i.afastar(totalAcumulado);
+		if (!minimizado) {
+			for (Instancia i : filhos) {
+				i.afastar(totalAcumulado);
+			}
 		}
 	}
 
@@ -271,8 +339,10 @@ public class Instancia {
 			Dimensao.larguraTotal = local.x + dimensao.largura;
 		}
 
-		for (Instancia i : filhos) {
-			i.calcularLarguraTotal();
+		if (!minimizado) {
+			for (Instancia i : filhos) {
+				i.calcularLarguraTotal();
+			}
 		}
 	}
 
@@ -280,12 +350,14 @@ public class Instancia {
 		int x1 = local.x + dimensao.largura;
 		int y1 = local.y + dimensao.altura / 2;
 
-		for (Instancia i : filhos) {
-			int x2 = i.local.x;
-			int y2 = i.local.y + i.dimensao.altura / 2;
+		if (!minimizado) {
+			for (Instancia i : filhos) {
+				int x2 = i.local.x;
+				int y2 = i.local.y + i.dimensao.altura / 2;
 
-			linhas.add(new Linha(x1, y1, x2, y2));
-			i.criarLinhas();
+				linhas.add(new Linha(x1, y1, x2, y2));
+				i.criarLinhas();
+			}
 		}
 	}
 
@@ -294,11 +366,13 @@ public class Instancia {
 			return this;
 		}
 
-		for (Instancia i : filhos) {
-			Instancia c = i.procurar(x, y);
+		if (!minimizado) {
+			for (Instancia i : filhos) {
+				Instancia c = i.procurar(x, y);
 
-			if (c != null) {
-				return c;
+				if (c != null) {
+					return c;
+				}
 			}
 		}
 
@@ -346,5 +420,17 @@ public class Instancia {
 
 	public void setCor(Color cor) {
 		this.cor = cor;
+	}
+
+	public boolean isMinimizado() {
+		return minimizado;
+	}
+
+	public void setMinimizado(boolean minimizado) {
+		this.minimizado = minimizado;
+	}
+
+	public void inverterIcone() {
+		minimizado = !minimizado;
 	}
 }

@@ -59,6 +59,8 @@ public class Arquivo {
 			pw.print(" cor=" + citar("" + i.getCor().getRGB()));
 		}
 
+		pw.print(" minimizado=" + citar("" + i.isMinimizado()));
+
 		if (i.isVazio()) {
 			pw.println("/>");
 		} else {
@@ -80,6 +82,8 @@ public class Arquivo {
 		public void startElement(String uri, String localName, String qName, Attributes attributes)
 				throws SAXException {
 			Instancia instancia = new Instancia(attributes.getValue("nome"));
+			String minimizado = attributes.getValue("minimizado");
+			instancia.setMinimizado(Boolean.parseBoolean(minimizado));
 
 			String margemInferior = attributes.getValue("margemInferior");
 
