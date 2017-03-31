@@ -236,6 +236,10 @@ public class Instancia {
 		return (x >= X && x <= X + Dimensao.TAMANHO_ICONE) && (y >= Y && y <= Y + Dimensao.TAMANHO_ICONE);
 	}
 
+	boolean duploClickValido(int x) {
+		return x < local.x + dimensao.largura - Dimensao.TAMANHO_ICONE;
+	}
+
 	public void organizar(FontMetrics metrics) {
 		Dimensao.larguraTotal = 0;
 		Dimensao.alturaTotal = 0;

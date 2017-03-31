@@ -93,6 +93,10 @@ public class Painel extends JPanel {
 						return;
 					}
 
+					if (!objeto.duploClickValido(e.getX())) {
+						return;
+					}
+
 					String descricao = JOptionPane.showInputDialog(Painel.this, objeto.getDescricao(),
 							objeto.getDescricao());
 
