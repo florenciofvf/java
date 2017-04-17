@@ -165,17 +165,13 @@ public class Instancia {
 
 				g2.setColor(Color.BLACK);
 				if (minimizado) {
-					g2.drawLine(local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE,
+					g2.drawLine(local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE + 2,
 							local.x + largura + Dimensao.METADE_ICONE,
-							local.y + Dimensao.MARGEM_ICONE + Dimensao.TAMANHO_ICONE);
-					g2.drawLine(local.x + largura, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE,
-							local.x + largura + Dimensao.TAMANHO_ICONE,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.TAMANHO_ICONE - 2);
+					g2.drawLine(local.x + largura + 2, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE,
+							local.x + largura + Dimensao.TAMANHO_ICONE - 2,
 							local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
 				} else {
-					// g2.drawLine(local.x + largura, local.y +
-					// Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE, local.x +
-					// largura + Dimensao.TAMANHO_ICONE, local.y +
-					// Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
 				}
 			}
 
@@ -202,17 +198,13 @@ public class Instancia {
 				g2.drawOval(local.x + largura, local.y + Dimensao.MARGEM_ICONE, Dimensao.TAMANHO_ICONE,
 						Dimensao.TAMANHO_ICONE);
 				if (minimizado) {
-					g2.drawLine(local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE,
+					g2.drawLine(local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE + 2,
 							local.x + largura + Dimensao.METADE_ICONE,
-							local.y + Dimensao.MARGEM_ICONE + Dimensao.TAMANHO_ICONE);
-					g2.drawLine(local.x + largura, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE,
-							local.x + largura + Dimensao.TAMANHO_ICONE,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.TAMANHO_ICONE - 2);
+					g2.drawLine(local.x + largura + 2, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE,
+							local.x + largura + Dimensao.TAMANHO_ICONE - 2,
 							local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
 				} else {
-					// g2.drawLine(local.x + largura, local.y +
-					// Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE, local.x +
-					// largura + Dimensao.TAMANHO_ICONE, local.y +
-					// Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
 				}
 			}
 
