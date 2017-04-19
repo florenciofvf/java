@@ -189,7 +189,7 @@ public class Painel extends JPanel {
 					return;
 				}
 
-				int resp = JOptionPane.showConfirmDialog(Painel.this, "Confirma?");
+				int resp = JOptionPane.showConfirmDialog(Painel.this, "Confirma?", "Atenção", JOptionPane.YES_NO_OPTION);
 
 				if (JOptionPane.OK_OPTION == resp) {
 					if (objeto.getPai() != null) {
