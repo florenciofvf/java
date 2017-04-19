@@ -29,6 +29,7 @@ public class Painel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JMenuItem menuItemSairHierarquia = new JMenuItem("Sair da Hierarquia");
 	private JMenuItem menuItemMargemInferior = new JMenuItem("Margem Inferior");
+	private JMenuItem menuItemComentario = new JMenuItem("Comentário");
 	private JMenuItem menuItemPrimeiro = new JMenuItem("Primeiro");
 	private JMenuItem menuItemVermelho = new JMenuItem("Vermelho");
 	private JMenuItem menuItemRecortar = new JMenuItem("Recortar");
@@ -74,6 +75,8 @@ public class Painel extends JPanel {
 		popup.add(menuItemVerde);
 		popup.add(menuItemAzul);
 		popup.add(menuItemPadrao);
+		popup.addSeparator();
+		popup.add(menuItemComentario);
 	}
 
 	private void tamanhoPainel() {
@@ -156,6 +159,29 @@ public class Painel extends JPanel {
 				}
 
 				objeto.adicionar(new Instancia(descricao));
+				organizar();
+				tamanhoPainel();
+				repaint();
+			}
+		});
+
+		menuItemComentario.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto == null) {
+					return;
+				}
+
+				String comentario = JOptionPane.showInputDialog(Painel.this, objeto.getDescricao(),
+						objeto.getComentario());
+
+				if (comentario == null || comentario.trim().length() == 0) {
+					return;
+				}
+
+				objeto.setComentario(comentario);
 				organizar();
 				tamanhoPainel();
 				repaint();

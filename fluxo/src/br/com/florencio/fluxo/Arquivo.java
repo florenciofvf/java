@@ -61,6 +61,8 @@ public class Arquivo {
 
 		pw.print(" minimizado=" + citar("" + i.isMinimizado()));
 
+		pw.print(" comentario=" + citar(i.getComentario()));
+
 		if (i.isVazio()) {
 			pw.println("/>");
 		} else {
@@ -95,6 +97,9 @@ public class Arquivo {
 			if (cor != null && cor.trim().length() > 0) {
 				instancia.setCor(new Color(Integer.parseInt(cor)));
 			}
+
+			String comentario = attributes.getValue("comentario");
+			instancia.setComentario(comentario);
 
 			if (raiz == null) {
 				raiz = instancia;

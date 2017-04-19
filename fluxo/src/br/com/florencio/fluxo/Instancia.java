@@ -11,6 +11,7 @@ public class Instancia {
 	private List<Instancia> filhos;
 	private boolean minimizado;
 	private List<Linha> linhas;
+	private String comentario;
 	private Dimensao dimensao;
 	private String descricao;
 	private Instancia pai;
@@ -240,6 +241,10 @@ public class Instancia {
 			g2.setColor(Color.BLACK);
 			g2.drawRoundRect(local.x, local.y, largura, dimensao.altura, 8, 8);
 
+			if (getComentario().length() > 0) {
+				g2.fillOval(local.x, local.y, Dimensao.TAMANHO_ICONE_COMENTARIO, Dimensao.TAMANHO_ICONE_COMENTARIO);
+			}
+
 			if (filhos.size() > 0) {
 				g2.setColor(cor);
 				g2.fillOval(local.x + largura, local.y + Dimensao.MARGEM_ICONE, Dimensao.TAMANHO_ICONE,
@@ -281,6 +286,9 @@ public class Instancia {
 			g2.setColor(c);
 		} else {
 			g2.drawRoundRect(local.x, local.y, largura, dimensao.altura, 8, 8);
+			if (getComentario().length() > 0) {
+				g2.fillOval(local.x, local.y, Dimensao.TAMANHO_ICONE_COMENTARIO, Dimensao.TAMANHO_ICONE_COMENTARIO);
+			}
 
 			if (filhos.size() > 0) {
 				g2.drawOval(local.x + largura, local.y + Dimensao.MARGEM_ICONE, Dimensao.TAMANHO_ICONE,
@@ -520,5 +528,17 @@ public class Instancia {
 
 	public void inverterIcone() {
 		minimizado = !minimizado;
+	}
+
+	public String getComentario() {
+		if (comentario == null) {
+			comentario = "";
+		}
+
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
 	}
 }
