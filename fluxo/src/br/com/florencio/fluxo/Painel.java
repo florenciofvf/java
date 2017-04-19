@@ -31,6 +31,7 @@ public class Painel extends JPanel {
 	private JMenuItem menuItemMargemInferior = new JMenuItem("Margem Inferior");
 	private JMenuItem menuItemPrimeiro = new JMenuItem("Primeiro");
 	private JMenuItem menuItemVermelho = new JMenuItem("Vermelho");
+	private JMenuItem menuItemRecortar = new JMenuItem("Recortar");
 	private JMenuItem menuItemAmarelo = new JMenuItem("Amarelo");
 	private JMenuItem menuItemLaranja = new JMenuItem("Laranja");
 	private JMenuItem menuItemExcluir = new JMenuItem("Excluir");
@@ -57,6 +58,7 @@ public class Painel extends JPanel {
 		popup.add(menuItemSairHierarquia);
 		popup.addSeparator();
 		popup.add(menuItemCopiar);
+		popup.add(menuItemRecortar);
 		popup.add(menuItemColar);
 		popup.addSeparator();
 		popup.add(menuItemMargemInferior);
@@ -245,6 +247,27 @@ public class Painel extends JPanel {
 			}
 		});
 
+		menuItemRecortar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto == null) {
+					copiado = null;
+					return;
+				}
+
+				copiado = objeto.clonar();
+
+				if (objeto.getPai() != null) {
+					objeto.getPai().excluir(objeto);
+					organizar();
+					tamanhoPainel();
+					repaint();
+				}
+			}
+		});
+
 		menuItemColar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -278,7 +301,7 @@ public class Painel extends JPanel {
 				}
 			}
 		});
-		
+
 		menuItemSubir.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -332,7 +355,7 @@ public class Painel extends JPanel {
 				}
 			}
 		});
-		
+
 		menuItemVermelho.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
