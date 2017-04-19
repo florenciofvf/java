@@ -177,7 +177,7 @@ public class Painel extends JPanel {
 				String comentario = JOptionPane.showInputDialog(Painel.this, objeto.getDescricao(),
 						objeto.getComentario());
 
-				if (comentario == null || comentario.trim().length() == 0) {
+				if (comentario == null) {
 					return;
 				}
 
