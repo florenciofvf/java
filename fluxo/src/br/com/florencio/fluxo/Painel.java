@@ -34,6 +34,8 @@ public class Painel extends JPanel {
 	private JMenuItem menuItemExcluir = new JMenuItem("Excluir");
 	private JMenuItem menuItemPadrao = new JMenuItem("Padrão");
 	private JMenuItem menuItemCopiar = new JMenuItem("Copiar");
+	private JMenuItem menuItemDescer = new JMenuItem("Descer");
+	private JMenuItem menuItemSubir = new JMenuItem("Subir");
 	private JMenuItem menuItemVerde = new JMenuItem("Verde");
 	private JMenuItem menuItemColar = new JMenuItem("Colar");
 	private JMenuItem menuItemNovo = new JMenuItem("Novo");
@@ -54,6 +56,9 @@ public class Painel extends JPanel {
 		popup.add(menuItemColar);
 		popup.addSeparator();
 		popup.add(menuItemMargemInferior);
+		popup.addSeparator();
+		popup.add(menuItemSubir);
+		popup.add(menuItemDescer);
 		popup.addSeparator();
 		popup.add(menuItemVermelho);
 		popup.add(menuItemLaranja);
@@ -184,13 +189,17 @@ public class Painel extends JPanel {
 					return;
 				}
 
-				if (objeto.getPai() != null) {
-					objeto.getPai().excluir(objeto);
-				}
+				int resp = JOptionPane.showConfirmDialog(Painel.this, "Confirma?");
 
-				organizar();
-				tamanhoPainel();
-				repaint();
+				if (JOptionPane.OK_OPTION == resp) {
+					if (objeto.getPai() != null) {
+						objeto.getPai().excluir(objeto);
+					}
+
+					organizar();
+					tamanhoPainel();
+					repaint();
+				}
 			}
 		});
 
@@ -224,6 +233,42 @@ public class Painel extends JPanel {
 			}
 		});
 
+		menuItemSubir.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto == null) {
+					return;
+				}
+
+				if(objeto.getPai() != null) {
+					objeto.getPai().subir(objeto);
+					organizar();
+					tamanhoPainel();
+					repaint();
+				}
+			}
+		});
+
+		menuItemDescer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto == null) {
+					return;
+				}
+
+				if(objeto.getPai() != null) {
+					objeto.getPai().descer(objeto);
+					organizar();
+					tamanhoPainel();
+					repaint();
+				}
+			}
+		});
+		
 		menuItemVermelho.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -58,8 +58,37 @@ public class Instancia {
 				}
 			}
 		}
+
 		for (Instancia obj : filhos) {
 			obj.controlarMargemInferior();
+		}
+	}
+
+	public void subir(Instancia i) {
+		if (i == null || i.pai != this) {
+			return;
+		}
+
+		int pos = filhos.indexOf(i);
+
+		if (pos > 0) {
+			Instancia objAnterior = filhos.get(pos - 1);
+			filhos.set(pos, objAnterior);
+			filhos.set(pos - 1, i);
+		}
+	}
+
+	public void descer(Instancia i) {
+		if (i == null || i.pai != this) {
+			return;
+		}
+
+		int pos = filhos.indexOf(i);
+
+		if (pos < filhos.size() - 1) {
+			Instancia objPosterior = filhos.get(pos + 1);
+			filhos.set(pos, objPosterior);
+			filhos.set(pos + 1, i);
 		}
 	}
 
