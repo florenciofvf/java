@@ -82,7 +82,7 @@ public class Arquivo {
 		public void startElement(String uri, String localName, String qName, Attributes attributes)
 				throws SAXException {
 			Instancia instancia = new Instancia(attributes.getValue("nome"));
-			
+
 			String minimizado = attributes.getValue("minimizado");
 			instancia.setMinimizado(Boolean.parseBoolean(minimizado));
 
@@ -104,7 +104,7 @@ public class Arquivo {
 
 			sel.adicionar(instancia);
 			sel = instancia;
-			
+
 			raiz.controlarMargemInferior();
 		}
 

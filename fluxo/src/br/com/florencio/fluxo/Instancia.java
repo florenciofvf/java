@@ -44,6 +44,25 @@ public class Instancia {
 		filhos.add(i);
 	}
 
+	public void sairDaHierarquia() {
+		if (pai == null) {
+			return;
+		}
+
+		List<Instancia> lista = new ArrayList<>();
+
+		for (Instancia i : filhos) {
+			Instancia o = i.clonar();
+			lista.add(o);
+		}
+
+		for (Instancia i : lista) {
+			pai.adicionar(i);
+		}
+
+		pai.excluir(this);
+	}
+
 	public void controlarMargemInferior() {
 		if (pai != null && pai.getTamanho() < 2) {
 			if (margemInferior == Dimensao.MARGEM_INFERIOR) {
@@ -61,6 +80,19 @@ public class Instancia {
 
 		for (Instancia obj : filhos) {
 			obj.controlarMargemInferior();
+		}
+	}
+
+	public void primeiro(Instancia i) {
+		if (i == null || i.pai != this) {
+			return;
+		}
+
+		int pos = filhos.indexOf(i);
+
+		if (pos > 0) {
+			filhos.remove(pos);
+			filhos.add(0, i);
 		}
 	}
 
@@ -89,6 +121,19 @@ public class Instancia {
 			Instancia objPosterior = filhos.get(pos + 1);
 			filhos.set(pos, objPosterior);
 			filhos.set(pos + 1, i);
+		}
+	}
+
+	public void ultimo(Instancia i) {
+		if (i == null || i.pai != this) {
+			return;
+		}
+
+		int pos = filhos.indexOf(i);
+
+		if (pos < filhos.size() - 1) {
+			filhos.remove(pos);
+			filhos.add(i);
 		}
 	}
 
@@ -425,7 +470,7 @@ public class Instancia {
 		Instancia obj = new Instancia(descricao);
 		obj.cor = cor;
 
-		for (Instancia i : this.filhos) {
+		for (Instancia i : filhos) {
 			Instancia o = i.clonar();
 			obj.adicionar(o);
 		}

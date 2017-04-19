@@ -27,13 +27,16 @@ import javax.swing.SwingUtilities;
 
 public class Painel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private JMenuItem menuItemSairHierarquia = new JMenuItem("Sair da Hierarquia");
 	private JMenuItem menuItemMargemInferior = new JMenuItem("Margem Inferior");
+	private JMenuItem menuItemPrimeiro = new JMenuItem("Primeiro");
 	private JMenuItem menuItemVermelho = new JMenuItem("Vermelho");
 	private JMenuItem menuItemAmarelo = new JMenuItem("Amarelo");
 	private JMenuItem menuItemLaranja = new JMenuItem("Laranja");
 	private JMenuItem menuItemExcluir = new JMenuItem("Excluir");
 	private JMenuItem menuItemPadrao = new JMenuItem("Padrão");
 	private JMenuItem menuItemCopiar = new JMenuItem("Copiar");
+	private JMenuItem menuItemUltimo = new JMenuItem("Último");
 	private JMenuItem menuItemDescer = new JMenuItem("Descer");
 	private JMenuItem menuItemSubir = new JMenuItem("Subir");
 	private JMenuItem menuItemVerde = new JMenuItem("Verde");
@@ -51,14 +54,17 @@ public class Painel extends JPanel {
 		registrarEventos();
 		popup.add(menuItemNovo);
 		popup.add(menuItemExcluir);
+		popup.add(menuItemSairHierarquia);
 		popup.addSeparator();
 		popup.add(menuItemCopiar);
 		popup.add(menuItemColar);
 		popup.addSeparator();
 		popup.add(menuItemMargemInferior);
 		popup.addSeparator();
+		popup.add(menuItemPrimeiro);
 		popup.add(menuItemSubir);
 		popup.add(menuItemDescer);
+		popup.add(menuItemUltimo);
 		popup.addSeparator();
 		popup.add(menuItemVermelho);
 		popup.add(menuItemLaranja);
@@ -189,13 +195,35 @@ public class Painel extends JPanel {
 					return;
 				}
 
-				int resp = JOptionPane.showConfirmDialog(Painel.this, "Confirma?", "Atenção", JOptionPane.YES_NO_OPTION);
+				int resp = JOptionPane.showConfirmDialog(Painel.this, "Confirma?", "Atenção",
+						JOptionPane.YES_NO_OPTION);
 
 				if (JOptionPane.OK_OPTION == resp) {
 					if (objeto.getPai() != null) {
 						objeto.getPai().excluir(objeto);
 					}
 
+					organizar();
+					tamanhoPainel();
+					repaint();
+				}
+			}
+		});
+
+		menuItemSairHierarquia.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto == null) {
+					return;
+				}
+
+				int resp = JOptionPane.showConfirmDialog(Painel.this, "Confirma?", "Atenção",
+						JOptionPane.YES_NO_OPTION);
+
+				if (JOptionPane.OK_OPTION == resp) {
+					objeto.sairDaHierarquia();
 					organizar();
 					tamanhoPainel();
 					repaint();
@@ -233,6 +261,24 @@ public class Painel extends JPanel {
 			}
 		});
 
+		menuItemPrimeiro.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto == null) {
+					return;
+				}
+
+				if (objeto.getPai() != null) {
+					objeto.getPai().primeiro(objeto);
+					organizar();
+					tamanhoPainel();
+					repaint();
+				}
+			}
+		});
+		
 		menuItemSubir.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -242,7 +288,7 @@ public class Painel extends JPanel {
 					return;
 				}
 
-				if(objeto.getPai() != null) {
+				if (objeto.getPai() != null) {
 					objeto.getPai().subir(objeto);
 					organizar();
 					tamanhoPainel();
@@ -260,8 +306,26 @@ public class Painel extends JPanel {
 					return;
 				}
 
-				if(objeto.getPai() != null) {
+				if (objeto.getPai() != null) {
 					objeto.getPai().descer(objeto);
+					organizar();
+					tamanhoPainel();
+					repaint();
+				}
+			}
+		});
+
+		menuItemUltimo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Instancia objeto = procurar();
+
+				if (objeto == null) {
+					return;
+				}
+
+				if (objeto.getPai() != null) {
+					objeto.getPai().ultimo(objeto);
 					organizar();
 					tamanhoPainel();
 					repaint();
