@@ -82,38 +82,30 @@ public class Arquivo {
 		public void startElement(String uri, String localName, String qName, Attributes attributes)
 				throws SAXException {
 			Instancia instancia = new Instancia(attributes.getValue("nome"));
+			
 			String minimizado = attributes.getValue("minimizado");
 			instancia.setMinimizado(Boolean.parseBoolean(minimizado));
 
 			String margemInferior = attributes.getValue("margemInferior");
+			if (margemInferior != null && margemInferior.trim().length() > 0) {
+				instancia.margemInferior = Integer.parseInt(margemInferior);
+			}
 
 			String cor = attributes.getValue("cor");
+			if (cor != null && cor.trim().length() > 0) {
+				instancia.setCor(new Color(Integer.parseInt(cor)));
+			}
 
 			if (raiz == null) {
-				if (margemInferior != null && margemInferior.trim().length() > 0) {
-					instancia.margemInferior = Integer.parseInt(margemInferior);
-				}
-
-				if (cor != null && cor.trim().length() > 0) {
-					instancia.setCor(new Color(Integer.parseInt(cor)));
-				}
-
 				raiz = instancia;
 				sel = raiz;
 				return;
 			}
 
 			sel.adicionar(instancia);
-
-			if (margemInferior != null && margemInferior.trim().length() > 0) {
-				instancia.margemInferior = Integer.parseInt(margemInferior);
-			}
-
-			if (cor != null && cor.trim().length() > 0) {
-				instancia.setCor(new Color(Integer.parseInt(cor)));
-			}
-
 			sel = instancia;
+			
+			raiz.controlarMargemInferior();
 		}
 
 		@Override

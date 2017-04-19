@@ -42,6 +42,14 @@ public class Instancia {
 
 		i.pai = this;
 		filhos.add(i);
+	}
+
+	public void controlarMargemInferior() {
+		if (pai != null && pai.getTamanho() < 2) {
+			if (margemInferior == Dimensao.MARGEM_INFERIOR) {
+				margemInferior = 0;
+			}
+		}
 
 		if (filhos.size() > 1) {
 			for (Instancia obj : filhos) {
@@ -49,6 +57,9 @@ public class Instancia {
 					obj.margemInferior = Dimensao.MARGEM_INFERIOR;
 				}
 			}
+		}
+		for (Instancia obj : filhos) {
+			obj.controlarMargemInferior();
 		}
 	}
 
@@ -165,10 +176,16 @@ public class Instancia {
 
 				g2.setColor(Color.BLACK);
 				if (minimizado) {
-					g2.drawLine(local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE + 3, local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE + Dimensao.TAMANHO_ICONE - 3);
-					g2.drawLine(local.x + largura + 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE, local.x + largura + Dimensao.TAMANHO_ICONE - 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
+					g2.drawLine(local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE + 3,
+							local.x + largura + Dimensao.METADE_ICONE,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.TAMANHO_ICONE - 3);
+					g2.drawLine(local.x + largura + 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE,
+							local.x + largura + Dimensao.TAMANHO_ICONE - 3,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
 				} else {
-					g2.drawLine(local.x + largura + 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE, local.x + largura + Dimensao.TAMANHO_ICONE - 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
+					g2.drawLine(local.x + largura + 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE,
+							local.x + largura + Dimensao.TAMANHO_ICONE - 3,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
 				}
 			}
 
@@ -195,10 +212,16 @@ public class Instancia {
 				g2.drawOval(local.x + largura, local.y + Dimensao.MARGEM_ICONE, Dimensao.TAMANHO_ICONE,
 						Dimensao.TAMANHO_ICONE);
 				if (minimizado) {
-					g2.drawLine(local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE + 3, local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE + Dimensao.TAMANHO_ICONE - 3);
-					g2.drawLine(local.x + largura + 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE, local.x + largura + Dimensao.TAMANHO_ICONE - 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
+					g2.drawLine(local.x + largura + Dimensao.METADE_ICONE, local.y + Dimensao.MARGEM_ICONE + 3,
+							local.x + largura + Dimensao.METADE_ICONE,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.TAMANHO_ICONE - 3);
+					g2.drawLine(local.x + largura + 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE,
+							local.x + largura + Dimensao.TAMANHO_ICONE - 3,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
 				} else {
-					g2.drawLine(local.x + largura + 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE, local.x + largura + Dimensao.TAMANHO_ICONE - 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
+					g2.drawLine(local.x + largura + 3, local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE,
+							local.x + largura + Dimensao.TAMANHO_ICONE - 3,
+							local.y + Dimensao.MARGEM_ICONE + Dimensao.METADE_ICONE);
 				}
 			}
 
@@ -371,6 +394,7 @@ public class Instancia {
 
 	public Instancia clonar() {
 		Instancia obj = new Instancia(descricao);
+		obj.cor = cor;
 
 		for (Instancia i : this.filhos) {
 			Instancia o = i.clonar();

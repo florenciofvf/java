@@ -71,6 +71,7 @@ public class Painel extends JPanel {
 	}
 
 	private void organizar() {
+		raiz.controlarMargemInferior();
 		raiz.organizar(getFontMetrics(getFont()));
 	}
 
