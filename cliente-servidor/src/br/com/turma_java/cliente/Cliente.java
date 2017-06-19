@@ -21,6 +21,7 @@ public class Cliente extends JPanel {
 	private final List<Celula> celulas;
 	private boolean clienteAbatido;
 	private final JLabel mensagem;
+	private final boolean nativo;
 	private final JLabel titulo;
 	private final JPanel panel;
 	private final String nome;
@@ -33,6 +34,7 @@ public class Cliente extends JPanel {
 
 		this.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 		this.panel = new JPanel(new GridLayout(celulas, celulas));
+		this.nativo = form.cliente.equals(nome);
 		this.mensagem = new JLabel("Ativo");
 		this.setLayout(new BorderLayout());
 		this.celulas = new ArrayList<>();
@@ -84,7 +86,7 @@ public class Cliente extends JPanel {
 		if (nome.equals(m.getCliente())) {
 			mensagem.setBackground(Color.RED);
 			mensagem.setText("ABATIDO");
-			if (form.cliente.equals(nome)) {
+			if (nativo) {
 				form.abatido = true;
 			}
 			clienteAbatido = true;
@@ -95,7 +97,7 @@ public class Cliente extends JPanel {
 		if (nome.equals(m.getCliente())) {
 			mensagem.setBackground(Color.GREEN);
 			mensagem.setText("VENCEDOR");
-			if (form.cliente.equals(nome)) {
+			if (nativo) {
 				form.enviar(new Mensagem(Mensagem.ALVO));
 			}
 		}
@@ -121,12 +123,13 @@ public class Cliente extends JPanel {
 			if (comBorda) {
 				this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			}
+
 			this.addMouseListener(new Ouvinte());
 			this.especial = especial;
 			this.cliente = cliente;
 			this.numero = numero;
 
-			if (especial && cliente.form.cliente.equals(cliente.nome)) {
+			if (especial && cliente.nativo) {
 				setBackground(Color.BLUE);
 			}
 		}
@@ -141,7 +144,7 @@ public class Cliente extends JPanel {
 			if (this.numero == numero) {
 				setBackground(Color.RED);
 
-				if (especial && cliente.form.cliente.equals(cliente.nome)) {
+				if (especial && cliente.nativo) {
 					form.enviar(new Mensagem(Mensagem.ABATIDO, cliente.nome));
 				}
 			}
@@ -160,7 +163,7 @@ public class Cliente extends JPanel {
 					return;
 				}
 
-				if (especial && cliente.form.cliente.equals(cliente.nome)) {
+				if (especial && cliente.nativo) {
 					int i = JOptionPane.showConfirmDialog(form, "Deseja se auto destruir?", "Atenção",
 							JOptionPane.YES_NO_OPTION);
 

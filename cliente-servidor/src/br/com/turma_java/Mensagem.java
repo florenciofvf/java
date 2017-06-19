@@ -13,6 +13,7 @@ public class Mensagem implements Serializable {
 	public static final int PROXIMO = 7;
 	public static final int CLICK = 8;
 	public static final int ALVO = 9;
+	public static final int INI = 10;
 
 	private String clienteAlvo;
 	private int totalClientes;
@@ -85,6 +86,10 @@ public class Mensagem implements Serializable {
 
 	public boolean isAlvo() {
 		return tipo == ALVO;
+	}
+
+	public boolean isIni() {
+		return tipo == INI;
 	}
 
 	public int getCelulas() {
@@ -170,6 +175,8 @@ public class Mensagem implements Serializable {
 			return "CLICK";
 		case ALVO:
 			return "ALVO";
+		case INI:
+			return "INI";
 		}
 
 		return null;

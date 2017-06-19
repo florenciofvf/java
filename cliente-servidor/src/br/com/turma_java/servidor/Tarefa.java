@@ -71,7 +71,13 @@ public class Tarefa extends Thread {
 				if (m.isReiniciar()) {
 					servidor.reiniciarTarefas();
 					servidor.notificarMontagemTela();
+				} else if (m.isIni()) {
+					servidor.emAndamento = true;
 				} else {
+					if (m.isClick() && !servidor.emAndamento) {
+						System.out.println("CLICK DESCARTADO: " + m.getCliente());
+					}
+
 					servidor.enviar(m);
 				}
 			} catch (Exception e) {

@@ -47,11 +47,16 @@ public class Form extends JFrame {
 		setJMenuBar(barra);
 
 		JMenu menu = new JMenu("Config");
-		JMenuItem item = new JMenuItem("Reiniciar");
 		barra.add(menu);
-		menu.add(item);
 
-		item.addActionListener(new ActionListener() {
+		JMenuItem reiniciar = new JMenuItem("Reiniciar");
+		menu.add(reiniciar);
+		menu.addSeparator();
+
+		JMenuItem iniciar = new JMenuItem("Iniciar");
+		menu.add(iniciar);
+
+		reiniciar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!vencedor) {
@@ -59,6 +64,13 @@ public class Form extends JFrame {
 				} else {
 					enviar(new Mensagem(Mensagem.REINICIAR));
 				}
+			}
+		});
+
+		iniciar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				enviar(new Mensagem(Mensagem.INI));
 			}
 		});
 	}
@@ -75,7 +87,7 @@ public class Form extends JFrame {
 		try {
 			tarefa.enviar(m);
 		} catch (Exception e) {
-			Tarefa.excecao("Form.enviar: FECHANDO O FORMULÁRIO: " + cliente, e);
+			Tarefa.excecao("Form.enviar: FECHANDO O FORMUL�RIO: " + cliente, e);
 			System.exit(0);
 		}
 	}

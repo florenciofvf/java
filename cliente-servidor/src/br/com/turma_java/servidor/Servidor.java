@@ -16,11 +16,11 @@ public class Servidor {
 	private final Random random = new Random();
 	private ServerSocket serverSocket;
 	private String nomeVencedor;
-	private boolean emAndamento;
 	private final boolean borda;
 	private final int celulas;
 	private Tarefa proxima;
 	private int proximoID;
+	boolean emAndamento;
 
 	public Servidor(int celulas, boolean borda) {
 		this.celulas = celulas;
@@ -72,7 +72,6 @@ public class Servidor {
 			notificar(m);
 
 			if (m.isClick()) {
-				emAndamento = true;
 				configProximoJogador();
 				notificar(new Mensagem(Mensagem.PROXIMO, proxima.getCliente()));
 			}
@@ -100,7 +99,7 @@ public class Servidor {
 
 	private boolean encaminhar(Mensagem m) {
 		if (m.isClick()) {
-			return m.getCliente().equals(proxima.getCliente());
+			return emAndamento && m.getCliente().equals(proxima.getCliente());
 		}
 
 		if (m.isMontarTela()) {
