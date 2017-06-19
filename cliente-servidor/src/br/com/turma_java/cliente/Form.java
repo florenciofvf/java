@@ -101,7 +101,7 @@ public class Form extends JFrame {
 		try {
 			tarefa.enviar(m);
 		} catch (Exception e) {
-			Tarefa.excecao("Form.enviar: FECHANDO O FORMUL�RIO: " + cliente, e);
+			Tarefa.excecao("Form.enviar: FECHANDO O FORMULÁRIO: " + cliente, e);
 			System.exit(0);
 		}
 	}
@@ -146,6 +146,9 @@ public class Form extends JFrame {
 				cliente.click(m);
 			}
 		} else if (m.isAbatido()) {
+			if (cliente.equals(m.getCliente())) {
+				abatido = true;
+			}
 			for (Cliente cliente : clientes) {
 				cliente.abatido(m);
 			}
@@ -158,6 +161,9 @@ public class Form extends JFrame {
 			vencedor = cliente.equals(m.getCliente());
 			for (Cliente cliente : clientes) {
 				cliente.vencedor(m);
+			}
+			if (vencedor) {
+				enviar(new Mensagem(Mensagem.ALVO, null));
 			}
 		} else if (m.isAlvo()) {
 			for (Cliente cliente : clientes) {

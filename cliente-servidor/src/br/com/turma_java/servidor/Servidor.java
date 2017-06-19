@@ -72,37 +72,51 @@ public class Servidor {
 			notificar(m);
 
 			if (m.isClick()) {
+				System.out.println("CLICK DE: " + m.getCliente());				
 				configProximoJogador(null);
+
+				System.out.println("PRÓXIMO: " + proxima.getCliente());				
 				notificar(new Mensagem(Mensagem.PROXIMO, proxima.getCliente()));
 			}
 
 			if (m.isAbatido()) {
+				System.out.println("CLIENTE ABATIDO: " + m.getCliente());				
 				Util.marcarAbatido(tarefas, m);
 				String cliente = Util.getClienteVencedor(tarefas);
 
 				if (cliente != null) {
 					nomeVencedor = cliente;
+					
+					System.out.println("VENCEDOR: " + cliente);				
 					notificar(new Mensagem(Mensagem.VENCEDOR, cliente));
 				} else {
+					System.out.println("PRÓXIMO: " + proxima.getCliente());				
 					if (m.getCliente().equals(proxima.getCliente())) {
 						configProximoJogador(null);
+
+						System.out.println("PRÓXIMO: " + proxima.getCliente());				
 						notificar(new Mensagem(Mensagem.PROXIMO, proxima.getCliente()));
 					}
 				}
 			}
 
 			if (m.isExcluido()) {
+				System.out.println("CLIENTE EXCLUÍDO: " + m.getCliente());
+				
 				if (m.getCliente().equals(proxima.getCliente())) {
 					configProximoJogador(proxima);
 					if (proxima != null) {
+						System.out.println("PRÓXIMO: " + proxima.getCliente());				
 						notificar(new Mensagem(Mensagem.PROXIMO, proxima.getCliente()));
 					} else {
+						System.out.println("PODE RECEBER CLIENTES:");				
 						emAndamento = false;
 					}
 				}
 			}
 
 			if (m.isMontarTela()) {
+				System.out.println("PRÓXIMO: " + proxima.getCliente());				
 				notificar(new Mensagem(Mensagem.PROXIMO, proxima.getCliente()));
 			}
 		}
@@ -180,6 +194,7 @@ public class Servidor {
 		m.setTotalClientes(tarefas.size());
 		m.setCelulas(celulas);
 		m.setBorda(borda);
+		System.out.println("MONTAR TELA:");
 		enviar(m);
 	}
 }

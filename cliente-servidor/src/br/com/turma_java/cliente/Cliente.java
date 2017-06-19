@@ -86,9 +86,6 @@ public class Cliente extends JPanel {
 			mensagem.setBackground(Color.RED);
 			mensagem.setText("ABATIDO");
 			clienteAbatido = true;
-			if (nativo) {
-				form.abatido = true;
-			}
 		}
 	}
 
@@ -96,9 +93,6 @@ public class Cliente extends JPanel {
 		if (nome.equals(m.getCliente())) {
 			mensagem.setBackground(Color.GREEN);
 			mensagem.setText("VENCEDOR");
-			if (nativo) {
-				form.enviar(new Mensagem(Mensagem.ALVO, null));
-			}
 		}
 	}
 
