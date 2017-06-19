@@ -19,6 +19,7 @@ public class Mensagem implements Serializable {
 	private String metaInfo;
 	private String cliente;
 	private int celulaAlvo;
+	private boolean borda;
 	private int celulas;
 	private int tipo;
 
@@ -124,6 +125,14 @@ public class Mensagem implements Serializable {
 
 	public void setClienteAlvo(String clienteAlvo) {
 		this.clienteAlvo = clienteAlvo;
+	}
+
+	public boolean isBorda() {
+		return borda;
+	}
+
+	public void setBorda(boolean borda) {
+		this.borda = borda;
 	}
 
 	@Override

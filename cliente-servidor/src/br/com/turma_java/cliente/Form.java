@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -32,6 +33,7 @@ public class Form extends JFrame {
 	String cliente;
 
 	public Form() {
+		panel.setBorder(BorderFactory.createEmptyBorder(39, 40, 41, 42));
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		this.clientes = new ArrayList<>();
@@ -92,14 +94,14 @@ public class Form extends JFrame {
 
 			String[] metaInfos = m.getMetaInfo().split(",");
 			int lado = (int) Math.sqrt(m.getTotalClientes());
-			panel.setLayout(new GridLayout(lado, lado));
+			panel.setLayout(new GridLayout(lado, lado, 39, 39));
 
 			for (int i = 0; i < m.getTotalClientes(); i++) {
 				String[] nomeEspecial = metaInfos[i].split("-");
 				int especial = Integer.valueOf(nomeEspecial[1]);
 				String nome = nomeEspecial[0];
 
-				Cliente c = new Cliente(this, nome, m.getCelulas(), especial);
+				Cliente c = new Cliente(this, nome, m.getCelulas(), especial, m.isBorda());
 				clientes.add(c);
 				panel.add(c);
 			}

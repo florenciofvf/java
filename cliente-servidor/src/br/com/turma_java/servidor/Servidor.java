@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -18,12 +17,14 @@ public class Servidor {
 	private ServerSocket serverSocket;
 	private String nomeVencedor;
 	private boolean emAndamento;
+	private final boolean borda;
 	private final int celulas;
 	private Tarefa proxima;
 	private int proximoID;
 
-	public Servidor(int celulas) {
+	public Servidor(int celulas, boolean borda) {
 		this.celulas = celulas;
+		this.borda = borda;
 	}
 
 	public void iniciar(int porta) throws Exception {
@@ -122,25 +123,13 @@ public class Servidor {
 	}
 
 	private void configProximoJogador() {
-		Tarefa t = null;
+		Circular circular = new Circular();
 
-		Iterator<Tarefa> iterator = tarefas.iterator();
-		while (iterator.hasNext()) {
-			Tarefa tarefa = iterator.next();
-			if (tarefa == proxima) {
-				break;
-			}
+		for (Tarefa tarefa : tarefas) {
+			circular.add(tarefa);
 		}
 
-		while (iterator.hasNext()) {
-			Tarefa tarefa = iterator.next();
-			if (!tarefa.abatido) {
-				t = tarefa;
-				break;
-			}
-		}
-
-		proxima = t == null ? tarefas.get(0) : t;
+		proxima = circular.get(proxima);
 	}
 
 	private void notificar(Mensagem mensagem) {
@@ -166,6 +155,61 @@ public class Servidor {
 		m.setMetaInfo(Util.montarMetaInfoNomeEspecial(tarefas));
 		m.setTotalClientes(tarefas.size());
 		m.setCelulas(celulas);
+		m.setBorda(borda);
 		enviar(m);
+	}
+}
+
+class Circular {
+	NO cabeca;
+	NO cauda;
+	int qtd;
+
+	public void add(Tarefa t) {
+		NO no = new NO(t);
+		qtd++;
+
+		if (cabeca == null) {
+			cabeca = no;
+		}
+
+		if (cauda != null) {
+			cauda.proximo = no;
+		}
+
+		cauda = no;
+		cauda.proximo = cabeca;
+	}
+
+	public Tarefa get(Tarefa atual) {
+		NO n = cabeca;
+
+		while (n != null) {
+			if (atual == n.t) {
+				break;
+			}
+			n = n.proximo;
+		}
+
+		NO p = n.proximo;
+		int i = 0;
+		while (p.t.abatido) {
+			p = p.proximo;
+			i++;
+			if (i > qtd) {
+				throw new IllegalStateException();
+			}
+		}
+
+		return p.t;
+	}
+}
+
+class NO {
+	NO proximo;
+	Tarefa t;
+
+	NO(Tarefa tarefa) {
+		t = tarefa;
 	}
 }

@@ -26,7 +26,7 @@ public class Cliente extends JPanel {
 	private final String nome;
 	private final Form form;
 
-	public Cliente(Form form, String nome, int celulas, int celulaEspecial) {
+	public Cliente(Form form, String nome, int celulas, int celulaEspecial, boolean comBorda) {
 		if (nome == null || nome.trim().length() == 0) {
 			throw new IllegalArgumentException("Cliente sem nome.");
 		}
@@ -42,7 +42,7 @@ public class Cliente extends JPanel {
 		this.form = form;
 
 		for (int i = 0; i < total; i++) {
-			Celula c = new Celula(this, i, celulaEspecial == i);
+			Celula c = new Celula(this, i, celulaEspecial == i, comBorda);
 			this.celulas.add(c);
 		}
 
@@ -117,8 +117,10 @@ public class Cliente extends JPanel {
 		private final Cliente cliente;
 		private final int numero;
 
-		public Celula(Cliente cliente, int numero, boolean especial) {
-			this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		public Celula(Cliente cliente, int numero, boolean especial, boolean comBorda) {
+			if (comBorda) {
+				this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			}
 			this.addMouseListener(new Ouvinte());
 			this.especial = especial;
 			this.cliente = cliente;
