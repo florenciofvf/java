@@ -50,7 +50,7 @@ public class Form extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				if (vencedor) {
-					enviar(new Mensagem(Mensagem.REINICIAR));
+					enviar(new Mensagem(Mensagem.REINICIAR, cliente));
 				}
 			}
 		});
@@ -76,7 +76,7 @@ public class Form extends JFrame {
 				if (!vencedor) {
 					JOptionPane.showMessageDialog(Form.this, "Somente o vencedor pode reiniciar.");
 				} else {
-					enviar(new Mensagem(Mensagem.REINICIAR));
+					enviar(new Mensagem(Mensagem.REINICIAR, cliente));
 				}
 			}
 		});
@@ -84,7 +84,7 @@ public class Form extends JFrame {
 		iniciar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enviar(new Mensagem(Mensagem.INI));
+				enviar(new Mensagem(Mensagem.INI, cliente));
 			}
 		});
 	}

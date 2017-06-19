@@ -97,7 +97,7 @@ public class Cliente extends JPanel {
 			mensagem.setBackground(Color.GREEN);
 			mensagem.setText("VENCEDOR");
 			if (nativo) {
-				form.enviar(new Mensagem(Mensagem.ALVO));
+				form.enviar(new Mensagem(Mensagem.ALVO, null));
 			}
 		}
 	}
@@ -171,9 +171,8 @@ public class Cliente extends JPanel {
 					}
 				}
 
-				Mensagem m = new Mensagem(Mensagem.CLICK);
+				Mensagem m = new Mensagem(Mensagem.CLICK, form.cliente);
 				m.setClienteAlvo(cliente.nome);
-				m.setCliente(form.cliente);
 				m.setCelulaAlvo(numero);
 				form.enviar(m);
 			}

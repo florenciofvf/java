@@ -175,7 +175,7 @@ public class Servidor {
 	void notificarMontagemTela() {
 		Tarefa vencedor = Util.getTarefaValida(tarefas, nomeVencedor);
 		proxima = vencedor != null ? vencedor : tarefas.get(0);
-		Mensagem m = new Mensagem(Mensagem.MONTAR_TELA);
+		Mensagem m = new Mensagem(Mensagem.MONTAR_TELA, null);
 		m.setMetaInfo(Util.montarMetaInfoNomeEspecial(tarefas));
 		m.setTotalClientes(tarefas.size());
 		m.setCelulas(celulas);

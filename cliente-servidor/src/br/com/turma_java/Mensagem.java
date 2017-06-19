@@ -27,10 +27,6 @@ public class Mensagem implements Serializable {
 	public Mensagem() {
 	}
 
-	public Mensagem(int tipo) {
-		this.tipo = tipo;
-	}
-
 	public Mensagem(int tipo, String cliente) {
 		this.cliente = cliente;
 		this.tipo = tipo;

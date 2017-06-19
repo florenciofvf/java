@@ -68,11 +68,16 @@ public class Tarefa extends Thread {
 		while (valida) {
 			try {
 				Mensagem m = (Mensagem) objectInput.readObject();
+
 				if (m.isReiniciar()) {
+					System.out.println("REINICIADO POR: " + m.getCliente());
 					servidor.reiniciarTarefas();
 					servidor.notificarMontagemTela();
+
 				} else if (m.isIni()) {
+					System.out.println("INICIADO POR: " + m.getCliente());
 					servidor.emAndamento = true;
+
 				} else {
 					if (m.isClick() && !servidor.emAndamento) {
 						System.out.println("CLICK DESCARTADO: " + m.getCliente());
@@ -83,9 +88,8 @@ public class Tarefa extends Thread {
 			} catch (Exception e) {
 				valida = false;
 				excecao("TarefaServidor.run(): LEITURA DA MENSAGEM. INVALIDANDO A TAREFA: " + cliente, e);
-				Mensagem m = new Mensagem(Mensagem.EXCLUIDO);
+				Mensagem m = new Mensagem(Mensagem.EXCLUIDO, cliente);
 				m.setMetaInfo("[" + cliente + "]");
-				m.setCliente(cliente);
 				servidor.enviar(m);
 			}
 		}
