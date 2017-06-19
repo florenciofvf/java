@@ -72,7 +72,7 @@ public class Servidor {
 			notificar(m);
 
 			if (m.isClick()) {
-				configProximoJogador();
+				configProximoJogador(null);
 				notificar(new Mensagem(Mensagem.PROXIMO, proxima.getCliente()));
 			}
 
@@ -85,8 +85,19 @@ public class Servidor {
 					notificar(new Mensagem(Mensagem.VENCEDOR, cliente));
 				} else {
 					if (m.getCliente().equals(proxima.getCliente())) {
-						configProximoJogador();
+						configProximoJogador(null);
 						notificar(new Mensagem(Mensagem.PROXIMO, proxima.getCliente()));
+					}
+				}
+			}
+
+			if (m.isExcluido()) {
+				if (m.getCliente().equals(proxima.getCliente())) {
+					configProximoJogador(proxima);
+					if (proxima != null) {
+						notificar(new Mensagem(Mensagem.PROXIMO, proxima.getCliente()));
+					} else {
+						emAndamento = false;
 					}
 				}
 			}
@@ -121,11 +132,25 @@ public class Servidor {
 		return false;
 	}
 
-	private void configProximoJogador() {
+	private void configProximoJogador(Tarefa excluida) {
+		if (tarefas.isEmpty()) {
+			proxima = null;
+			return;
+		}
+
+		if (tarefas.size() == 1) {
+			proxima = tarefas.get(0);
+			return;
+		}
+
 		Circular circular = new Circular();
 
 		for (Tarefa tarefa : tarefas) {
 			circular.add(tarefa);
+		}
+
+		if (excluida != null) {
+			circular.add(excluida);
 		}
 
 		proxima = circular.get(proxima);
@@ -183,16 +208,21 @@ class Circular {
 	public Tarefa get(Tarefa atual) {
 		NO n = cabeca;
 
+		int i = 0;
 		while (n != null) {
 			if (atual == n.t) {
 				break;
 			}
 			n = n.proximo;
+			i++;
+			if (i > qtd) {
+				throw new IllegalStateException();
+			}
 		}
 
+		i = 0;
 		NO p = n.proximo;
-		int i = 0;
-		while (p.t.abatido) {
+		while (p.t.abatido || !p.t.isValida()) {
 			p = p.proximo;
 			i++;
 			if (i > qtd) {

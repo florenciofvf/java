@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -40,6 +42,15 @@ public class Form extends JFrame {
 		add(BorderLayout.CENTER, panel);
 		montarMenu();
 		setSize(500, 500);
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if (vencedor) {
+					enviar(new Mensagem(Mensagem.REINICIAR));
+				}
+			}
+		});
 	}
 
 	private void montarMenu() {

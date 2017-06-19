@@ -85,6 +85,7 @@ public class Tarefa extends Thread {
 				excecao("TarefaServidor.run(): LEITURA DA MENSAGEM. INVALIDANDO A TAREFA: " + cliente, e);
 				Mensagem m = new Mensagem(Mensagem.EXCLUIDO);
 				m.setMetaInfo("[" + cliente + "]");
+				m.setCliente(cliente);
 				servidor.enviar(m);
 			}
 		}
@@ -104,5 +105,10 @@ public class Tarefa extends Thread {
 		if (e != null && Servidor.PRINT_STACK_TRACE) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String toString() {
+		return cliente;
 	}
 }
