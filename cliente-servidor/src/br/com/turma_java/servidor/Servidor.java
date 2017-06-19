@@ -28,7 +28,7 @@ public class Servidor {
 	}
 
 	public void iniciar(int porta) throws Exception {
-		serverSocket = new ServerSocket(porta);
+		this.serverSocket = new ServerSocket(porta);
 		System.out.println("Servidor iniciado na porta: " + porta);
 
 		while (true) {
@@ -173,7 +173,7 @@ public class Servidor {
 	}
 
 	void notificarMontagemTela() {
-		Tarefa vencedor = Util.getVencedor(tarefas, nomeVencedor);
+		Tarefa vencedor = Util.getTarefaValida(tarefas, nomeVencedor);
 		proxima = vencedor != null ? vencedor : tarefas.get(0);
 		Mensagem m = new Mensagem(Mensagem.MONTAR_TELA);
 		m.setMetaInfo(Util.montarMetaInfoNomeEspecial(tarefas));

@@ -8,7 +8,10 @@ import br.com.turma_java.Mensagem;
 
 public class Util {
 
-	public static Tarefa getVencedor(List<Tarefa> tarefas, String nome) {
+	private Util() {
+	}
+
+	public static Tarefa getTarefaValida(List<Tarefa> tarefas, String nome) {
 		Iterator<Tarefa> iterator = tarefas.iterator();
 
 		while (iterator.hasNext()) {

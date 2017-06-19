@@ -48,7 +48,7 @@ public class Cliente extends JPanel {
 			this.celulas.add(c);
 		}
 
-		montarLayout();
+		this.montarLayout();
 	}
 
 	private void montarLayout() {
@@ -75,7 +75,6 @@ public class Cliente extends JPanel {
 	}
 
 	public void proximo(Mensagem m) {
-		form.proximo = form.cliente.equals(m.getCliente());
 		titulo.setBackground(getBackground());
 		if (nome.equals(m.getCliente())) {
 			titulo.setBackground(Color.CYAN);
@@ -86,10 +85,10 @@ public class Cliente extends JPanel {
 		if (nome.equals(m.getCliente())) {
 			mensagem.setBackground(Color.RED);
 			mensagem.setText("ABATIDO");
+			clienteAbatido = true;
 			if (nativo) {
 				form.abatido = true;
 			}
-			clienteAbatido = true;
 		}
 	}
 

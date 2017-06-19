@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -26,6 +27,7 @@ import br.com.turma_java.Mensagem;
 
 public class Form extends JFrame {
 	private static final long serialVersionUID = 1L;
+	private final JLabel titulo = new JLabel();
 	private final JPanel panel = new JPanel();
 	private final List<Cliente> clientes;
 	private Tarefa tarefa;
@@ -35,15 +37,16 @@ public class Form extends JFrame {
 	String cliente;
 
 	public Form() {
-		panel.setBorder(BorderFactory.createEmptyBorder(39, 40, 41, 42));
+		this.panel.setBorder(BorderFactory.createEmptyBorder(39, 40, 41, 42));
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		this.clientes = new ArrayList<>();
-		add(BorderLayout.CENTER, panel);
-		montarMenu();
-		setSize(500, 500);
+		this.add(BorderLayout.NORTH, titulo);
+		this.add(BorderLayout.CENTER, panel);
+		this.setSize(500, 500);
+		this.montarMenu();
 
-		addWindowListener(new WindowAdapter() {
+		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				if (vencedor) {
@@ -107,6 +110,7 @@ public class Form extends JFrame {
 		if (m.isConectado()) {
 			cliente = m.getCliente();
 			Objects.requireNonNull(cliente, "Cliente nulo.");
+			titulo.setText(cliente);
 			setTitle(cliente);
 		} else if (m.isMontarTela()) {
 			panel.removeAll();
@@ -146,6 +150,7 @@ public class Form extends JFrame {
 				cliente.abatido(m);
 			}
 		} else if (m.isProximo()) {
+			proximo = cliente.equals(m.getCliente());
 			for (Cliente cliente : clientes) {
 				cliente.proximo(m);
 			}
